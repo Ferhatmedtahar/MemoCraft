@@ -1,19 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-  Atom,
-  BookOpen,
-  Bot,
-  User,
-  ChevronLeft,
-  ChevronRight,
-  Palette,
-} from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,6 +8,21 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useTheme } from "@/contexts/theme-context";
+import { cn } from "@/lib/utils";
+import {
+  Atom,
+  Bot,
+  ChevronLeft,
+  ChevronRight,
+  Clock,
+  GitGraph,
+  Notebook,
+  Palette,
+  User,
+} from "lucide-react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 const sidebarItems = [
   {
@@ -29,9 +31,19 @@ const sidebarItems = [
     icon: Atom,
   },
   {
+    title: "Notes",
+    href: "/dashboard/notes",
+    icon: Notebook,
+  },
+  {
     title: "Flashcards",
     href: "/dashboard/flashcards",
-    icon: BookOpen,
+    icon: Clock,
+  },
+  {
+    title: "Graph View",
+    href: "/dashboard/graph-view",
+    icon: GitGraph,
   },
   {
     title: "AI Assistant",
