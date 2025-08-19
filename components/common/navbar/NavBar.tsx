@@ -19,13 +19,13 @@ async function NavBar() {
               <MapPin className="w-5 h-5 text-white" />
             </div>
             <Link href="/" className="text-xl font-bold text-yellow-500 ">
-              LocalEats
+              CollabNotes
             </Link>
           </div>
 
           {user ? (
-            <Link href="/map">
-              <Button variant="secondary">Go to Map</Button>
+            <Link href="/dashboard">
+              <Button variant="secondary">Dashboard</Button>
             </Link>
           ) : (
             <AuthForm />
