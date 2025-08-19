@@ -16,6 +16,7 @@ import {
   ChevronRight,
   Clock,
   GitGraph,
+  LayoutDashboard,
   Notebook,
   Palette,
   User,
@@ -25,6 +26,11 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const sidebarItems = [
+  {
+    title: "Dashboard",
+    href: "/dashboard",
+    icon: LayoutDashboard,
+  },
   {
     title: "Atoms",
     href: "/dashboard/atoms",
@@ -71,7 +77,7 @@ export default function Sidebar() {
   return (
     <div
       className={cn(
-        "flex flex-col h-full bg-sidebar border-r border-sidebar-border transition-all duration-300",
+        "flex flex-col h-full  border-r border-white transition-all duration-300",
         collapsed ? "w-16" : "w-64"
       )}
     >
