@@ -12,6 +12,26 @@ export async function GET(request: NextRequest) {
     const supabase = await createClientForServer();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
+      //!add user to the db
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        // Insert into your custom `users` table if not exists
+        await supabase.from("users").upsert(
+          {
+            id: user.id,
+            email: user.email,
+            name:
+              user.user_metadata?.full_name ?? user.user_metadata?.name ?? null,
+            phone: user.phone ?? null,
+            avatar_url: user.user_metadata?.avatar_url ?? null,
+          },
+          { onConflict: "id" } // avoid duplicates
+        );
+      }
+
       const forwardedHost = request.headers.get("x-forwarded-host"); // original origin before load balancer
       const isLocalEnv = process.env.NODE_ENV === "development";
       if (isLocalEnv) {
