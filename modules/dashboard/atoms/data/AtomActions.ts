@@ -88,6 +88,30 @@ export async function togglePin(id: string) {
   }
 }
 
+export async function updateAtomFolder(atomId: string, folderId: string) {
+  try {
+    const supabase = await createClientForServer();
+    const user = await supabase.auth.getUser();
+
+    if (!user.data.user) {
+      return { success: false, error: "User not authenticated" };
+    }
+
+    const { error } = await supabase
+      .from("atoms")
+      .update({ folder_id: folderId })
+      .eq("id", atomId)
+      .eq("user_id", user.data.user.id);
+
+    if (error) return { success: false, error: "Failed to update atom folder" };
+    revalidatePath("/");
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating atom folder:", error);
+    return { success: false, error: "Failed to update atom folder" };
+  }
+}
+
 export async function toggleFavorite(id: string) {
   try {
     const supabase = await createClientForServer();
@@ -105,7 +129,7 @@ export async function toggleFavorite(id: string) {
       .eq("user_id", user.data.user.id)
       .single();
 
-    if (fetchError) throw fetchError;
+    if (fetchError) return { success: false, error: "Failed to fetch atom" };
 
     // Toggle the favorite status
     const { error } = await supabase
@@ -114,7 +138,7 @@ export async function toggleFavorite(id: string) {
       .eq("id", id)
       .eq("user_id", user.data.user.id);
 
-    if (error) throw error;
+    if (error) return { success: false, error: "Failed to toggle favorite" };
 
     revalidatePath("/");
     return { success: true };

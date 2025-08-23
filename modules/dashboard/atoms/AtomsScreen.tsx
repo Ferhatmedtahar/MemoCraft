@@ -1,6 +1,7 @@
 import CreateAtomDialog from "@/modules/dashboard/atoms/features/CreateAtomDialog";
 import { createClientForServer } from "@/utils/supabase/server";
-import AtomsList from "./features/AtomsList";
+import AtomsListServer from "./features/components/AtomListServer";
+import CreateFolderDialog from "./features/CreateFolderDialog";
 export default async function AtomsScreen() {
   const supabase = await createClientForServer();
   const {
@@ -18,9 +19,10 @@ export default async function AtomsScreen() {
         </div>
 
         <CreateAtomDialog />
+        <CreateFolderDialog />
       </div>
 
-      <AtomsList />
+      <AtomsListServer />
     </div>
   );
 }

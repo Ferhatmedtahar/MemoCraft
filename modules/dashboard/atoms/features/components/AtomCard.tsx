@@ -1,12 +1,5 @@
 "use client";
-import React, { useState } from "react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -15,17 +8,26 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
-  MoreVertical,
-  Trash2,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { useDraggable } from "@dnd-kit/core";
+import {
   Edit3,
-  Pin,
+  GripVertical,
   Heart,
   HeartOff,
+  MoreVertical,
+  Pin,
   PinOff,
+  Trash2,
 } from "lucide-react";
+import React, { useState } from "react";
 
 interface AtomCardProps {
   atom: {
@@ -33,6 +35,7 @@ interface AtomCardProps {
     title: string;
     pinned?: boolean;
     favorite?: boolean;
+    folder_id?: string | null;
   };
   onDelete?: (id: string) => void;
   onUpdate?: (id: string, title: string) => void;
@@ -52,6 +55,11 @@ function AtomCard({
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [updateTitle, setUpdateTitle] = useState(atom.title);
   const [isLoading, setIsLoading] = useState(false);
+
+  const { attributes, listeners, setNodeRef, transform, isDragging } =
+    useDraggable({
+      id: atom.id,
+    });
 
   const handleDelete = async () => {
     if (!onDelete) return;
@@ -99,15 +107,37 @@ function AtomCard({
     }
   };
 
+  const style = transform
+    ? {
+        transform: `translate(${transform.x}px, ${transform.y}px)`,
+        zIndex: isDragging ? 1000 : undefined,
+      }
+    : undefined;
+
   return (
     <>
       <div
-        className="relative bg-gray-800 hover:bg-gray-750 border border-gray-700 rounded-lg p-4 transition-all duration-200 cursor-pointer group"
+        ref={setNodeRef}
+        style={style}
+        className={`relative bg-gray-800 hover:bg-gray-750 border border-gray-700 rounded-lg p-4 transition-all duration-200 group ${
+          isDragging ? "opacity-50 shadow-lg" : "cursor-pointer"
+        }`}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
+        {/* Drag handle */}
+        <div
+          {...attributes}
+          {...listeners}
+          className={`absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing ${
+            isDragging ? "opacity-100" : ""
+          }`}
+        >
+          <GripVertical className="h-4 w-4 text-gray-500" />
+        </div>
+
         {/* Main content */}
-        <div className="pr-8">
+        <div className="pl-6 pr-8">
           <div className="flex items-start gap-2 mb-2">
             {atom.pinned && (
               <Pin className="h-4 w-4 text-blue-400 flex-shrink-0 mt-0.5" />
@@ -121,7 +151,7 @@ function AtomCard({
           </p>
         </div>
 
-        {/* Three dots menu - appears on hover */}
+        {/* Action menu */}
         <div
           className={`absolute top-3 right-3 transition-opacity duration-200 ${
             isHovered ? "opacity-100" : "opacity-0"
@@ -226,7 +256,7 @@ function AtomCard({
         </DialogContent>
       </Dialog>
 
-      {/* Delete Confirmation Modal */}
+      {/* Delete Modal */}
       <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
@@ -267,14 +297,7 @@ function AtomCard({
 
 export default AtomCard;
 // "use client";
-// import React, { useState } from "react";
-// import {
-//   DropdownMenu,
-//   DropdownMenuContent,
-//   DropdownMenuItem,
-//   DropdownMenuSeparator,
-//   DropdownMenuTrigger,
-// } from "@/components/ui/dropdown-menu";
+// import { Button } from "@/components/ui/button";
 // import {
 //   Dialog,
 //   DialogContent,
@@ -283,24 +306,32 @@ export default AtomCard;
 //   DialogHeader,
 //   DialogTitle,
 // } from "@/components/ui/dialog";
-// import { Button } from "@/components/ui/button";
-// import { Input } from "@/components/ui/input";
 // import {
-//   MoreVertical,
-//   Trash2,
+//   DropdownMenu,
+//   DropdownMenuContent,
+//   DropdownMenuItem,
+//   DropdownMenuSeparator,
+//   DropdownMenuTrigger,
+// } from "@/components/ui/dropdown-menu";
+// import { Input } from "@/components/ui/input";
+// import { useDraggable } from "@dnd-kit/core";
+// import {
 //   Edit3,
-//   Pin,
 //   Heart,
 //   HeartOff,
+//   MoreVertical,
+//   Pin,
 //   PinOff,
+//   Trash2,
 // } from "lucide-react";
+// import React, { useState } from "react";
 
 // interface AtomCardProps {
 //   atom: {
 //     id: string;
 //     title: string;
-//     isPinned?: boolean;
-//     isFavorite?: boolean;
+//     pinned?: boolean;
+//     favorite?: boolean;
 //   };
 //   onDelete?: (id: string) => void;
 //   onUpdate?: (id: string, title: string) => void;
@@ -321,6 +352,9 @@ export default AtomCard;
 //   const [updateTitle, setUpdateTitle] = useState(atom.title);
 //   const [isLoading, setIsLoading] = useState(false);
 
+//   const { attributes, listeners, setNodeRef, transform } = useDraggable({
+//     id: atom.id,
+//   });
 //   const handleDelete = async () => {
 //     if (!onDelete) return;
 //     setIsLoading(true);
@@ -367,9 +401,18 @@ export default AtomCard;
 //     }
 //   };
 
+//   const style = transform
+//     ? {
+//         transform: `translate(${transform.x}px,${transform.y}px )`,
+//       }
+//     : undefined;
 //   return (
 //     <>
 //       <div
+//         style={style}
+//         ref={setNodeRef}
+//         {...attributes}
+//         {...listeners}
 //         className="relative bg-gray-800 hover:bg-gray-750 border border-gray-700 rounded-lg p-4 transition-all duration-200 cursor-pointer group"
 //         onMouseEnter={() => setIsHovered(true)}
 //         onMouseLeave={() => setIsHovered(false)}
@@ -377,10 +420,10 @@ export default AtomCard;
 //         {/* Main content */}
 //         <div className="pr-8">
 //           <div className="flex items-start gap-2 mb-2">
-//             {atom.isPinned && (
+//             {atom.pinned && (
 //               <Pin className="h-4 w-4 text-blue-400 flex-shrink-0 mt-0.5" />
 //             )}
-//             {atom.isFavorite && (
+//             {atom.favorite && (
 //               <Heart className="h-4 w-4 text-red-400 fill-current flex-shrink-0 mt-0.5" />
 //             )}
 //           </div>
@@ -389,7 +432,6 @@ export default AtomCard;
 //           </p>
 //         </div>
 
-//         {/* Three dots menu - appears on hover */}
 //         <div
 //           className={`absolute top-3 right-3 transition-opacity duration-200 ${
 //             isHovered ? "opacity-100" : "opacity-0"
@@ -412,7 +454,7 @@ export default AtomCard;
 //                 Update
 //               </DropdownMenuItem>
 //               <DropdownMenuItem onClick={handlePin}>
-//                 {atom.isPinned ? (
+//                 {atom.pinned ? (
 //                   <>
 //                     <PinOff className="h-4 w-4 mr-2" />
 //                     Unpin
@@ -425,7 +467,7 @@ export default AtomCard;
 //                 )}
 //               </DropdownMenuItem>
 //               <DropdownMenuItem onClick={handleFavorite}>
-//                 {atom.isFavorite ? (
+//                 {atom.favorite ? (
 //                   <>
 //                     <HeartOff className="h-4 w-4 mr-2" />
 //                     Remove from favorites
@@ -450,7 +492,6 @@ export default AtomCard;
 //         </div>
 //       </div>
 
-//       {/* Update Modal */}
 //       <Dialog open={isUpdateModalOpen} onOpenChange={setIsUpdateModalOpen}>
 //         <DialogContent className="sm:max-w-[425px]">
 //           <form onSubmit={handleUpdate}>
@@ -494,7 +535,6 @@ export default AtomCard;
 //         </DialogContent>
 //       </Dialog>
 
-//       {/* Delete Confirmation Modal */}
 //       <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
 //         <DialogContent className="sm:max-w-[425px]">
 //           <DialogHeader>
