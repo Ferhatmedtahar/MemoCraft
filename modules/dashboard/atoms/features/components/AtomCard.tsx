@@ -160,7 +160,7 @@ function AtomCard({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
-                variant="ghost"
+                variant="outline"
                 size="sm"
                 className="h-8 w-8 p-0 hover:bg-gray-600"
                 onClick={(e) => e.stopPropagation()}
@@ -282,7 +282,7 @@ function AtomCard({
             </Button>
             <Button
               type="button"
-              variant="destructive"
+              variant="secondary"
               onClick={handleDelete}
               disabled={isLoading}
             >
