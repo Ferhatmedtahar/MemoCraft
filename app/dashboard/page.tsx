@@ -1,9 +1,4 @@
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Atom, BookOpen, Bot, User } from "lucide-react";
 
 export default function DashboardPage() {
@@ -53,17 +48,17 @@ export default function DashboardPage() {
               key={feature.title}
               className="hover:shadow-lg transition-shadow cursor-pointer"
             >
-              <CardHeader>
+              <Card.Header>
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-primary/10 rounded-lg">
                     <Icon className="h-6 w-6 text-primary" />
                   </div>
                   <div>
-                    <CardTitle className="text-xl">{feature.title}</CardTitle>
-                    <CardDescription>{feature.description}</CardDescription>
+                    <Card.Title className="text-xl">{feature.title}</Card.Title>
+                    <Card.Description>{feature.description}</Card.Description>
                   </div>
                 </div>
-              </CardHeader>
+              </Card.Header>
             </Card>
           );
         })}

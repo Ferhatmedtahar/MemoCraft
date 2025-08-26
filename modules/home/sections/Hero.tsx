@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import {
   BarChart3,
   CreditCard,
@@ -43,7 +43,7 @@ export default function HomePage() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Notes & Folders */}
             <Card className="border-border bg-card hover:shadow-lg transition-shadow duration-300">
-              <CardContent className="p-6">
+              <Card.Content className="p-6">
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <FileText className="w-6 h-6 text-primary" />
                 </div>
@@ -54,12 +54,12 @@ export default function HomePage() {
                   Create rich-text notes and organize them in intuitive folder
                   structures for easy access.
                 </p>
-              </CardContent>
+              </Card.Content>
             </Card>
 
             {/* Knowledge Graph */}
             <Card className="border-border bg-card hover:shadow-lg transition-shadow duration-300">
-              <CardContent className="p-6">
+              <Card.Content className="p-6">
                 <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
                   <Network className="w-6 h-6 text-accent" />
                 </div>
@@ -70,12 +70,12 @@ export default function HomePage() {
                   Visualize connections between your notes and discover hidden
                   relationships in your knowledge.
                 </p>
-              </CardContent>
+              </Card.Content>
             </Card>
 
             {/* AI Summaries */}
             <Card className="border-border bg-card hover:shadow-lg transition-shadow duration-300">
-              <CardContent className="p-6">
+              <Card.Content className="p-6">
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <Sparkles className="w-6 h-6 text-primary" />
                 </div>
@@ -86,12 +86,12 @@ export default function HomePage() {
                   Get instant AI-powered summaries of your notes to quickly
                   review key concepts.
                 </p>
-              </CardContent>
+              </Card.Content>
             </Card>
 
             {/* Flashcards */}
             <Card className="border-border bg-card hover:shadow-lg transition-shadow duration-300">
-              <CardContent className="p-6">
+              <Card.Content className="p-6">
                 <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
                   <CreditCard className="w-6 h-6 text-accent" />
                 </div>
@@ -102,12 +102,12 @@ export default function HomePage() {
                   Turn your notes into interactive flashcards for effective
                   spaced repetition learning.
                 </p>
-              </CardContent>
+              </Card.Content>
             </Card>
 
             {/* Themes & Personalization */}
             <Card className="border-border bg-card hover:shadow-lg transition-shadow duration-300">
-              <CardContent className="p-6">
+              <Card.Content className="p-6">
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <Palette className="w-6 h-6 text-primary" />
                 </div>
@@ -118,12 +118,12 @@ export default function HomePage() {
                   Customize your workspace with beautiful themes and
                   personalization options.
                 </p>
-              </CardContent>
+              </Card.Content>
             </Card>
 
             {/* Statistics & Streaks */}
             <Card className="border-border bg-card hover:shadow-lg transition-shadow duration-300">
-              <CardContent className="p-6">
+              <Card.Content className="p-6">
                 <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
                   <BarChart3 className="w-6 h-6 text-accent" />
                 </div>
@@ -134,7 +134,7 @@ export default function HomePage() {
                   Track your learning progress with detailed statistics and
                   maintain study streaks.
                 </p>
-              </CardContent>
+              </Card.Content>
             </Card>
           </div>
         </div>

@@ -1,11 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { MessageCircle } from "lucide-react";
 
 export default function AIAssistantPage() {
@@ -25,19 +19,19 @@ export default function AIAssistantPage() {
       </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle>AI-Powered Help</CardTitle>
-          <CardDescription>
+        <Card.Header>
+          <Card.Title>AI-Powered Help</Card.Title>
+          <Card.Description>
             Ask questions, get explanations, and receive assistance with your
             studies.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+          </Card.Description>
+        </Card.Header>
+        <Card.Content>
           <p className="text-muted-foreground">
             Start a conversation with your AI assistant to get help with
             anything you need.
           </p>
-        </CardContent>
+        </Card.Content>
       </Card>
     </div>
   );

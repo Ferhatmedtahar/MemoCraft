@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 
@@ -25,18 +19,18 @@ export default function FlashcardsPage() {
       </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Study Sessions</CardTitle>
-          <CardDescription>
+        <Card.Header>
+          <Card.Title>Study Sessions</Card.Title>
+          <Card.Description>
             Create flashcard decks to help memorize and review important
             information.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+          </Card.Description>
+        </Card.Header>
+        <Card.Content>
           <p className="text-muted-foreground">
             No flashcard decks yet. Create your first deck to start studying!
           </p>
-        </CardContent>
+        </Card.Content>
       </Card>
     </div>
   );

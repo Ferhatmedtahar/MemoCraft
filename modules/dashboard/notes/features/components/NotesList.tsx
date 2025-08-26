@@ -122,7 +122,7 @@ function NotesListClient({
           <div key={folder.id} className="space-y-4">
             <FolderComponent
               folder={folder}
-              noteCount={notesByFolder[folder.id]?.length || 0}
+              NoteCount={notesByFolder[folder.id]?.length || 0}
             />
 
             {/* Notes in this folder */}

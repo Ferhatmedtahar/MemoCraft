@@ -1,7 +1,7 @@
 "use client";
 import MarkdownRenderer from "@/components/common/markdown-renderer";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -35,7 +35,7 @@ export default function CreatePostPage() {
       if (response.success) {
         router.push("/dashboard/notes");
       } else {
-        const errorData = response?.error?.message || "failed to create note";
+        const errorData = "failed to create note";
         throw new Error(errorData);
       }
     } catch (error) {
@@ -131,8 +131,8 @@ export default function CreatePostPage() {
             }`}
           >
             <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0">
-                <CardTitle>Write Note</CardTitle>
+              <Card.Header className="flex flex-row items-center justify-between space-y-0">
+                <Card.Title>Write Note</Card.Title>
                 <Button
                   onClick={handleAIFormat}
                   disabled={isProcessing}
@@ -145,8 +145,8 @@ export default function CreatePostPage() {
                   )}
                   Format Markdown using AI
                 </Button>
-              </CardHeader>
-              <CardContent>
+              </Card.Header>
+              <Card.Content>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="space-y-2">
                     <Label htmlFor="title">Title</Label>
@@ -189,15 +189,15 @@ export default function CreatePostPage() {
                     )}
                   </Button>
                 </form>
-              </CardContent>
+              </Card.Content>
             </Card>
 
             {preview && (
               <Card>
-                <CardHeader>
-                  <CardTitle>Preview</CardTitle>
-                </CardHeader>
-                <CardContent>
+                <Card.Header>
+                  <Card.Title>Preview</Card.Title>
+                </Card.Header>
+                <Card.Content>
                   <div className="space-y-4">
                     <h2 className="text-2xl font-bold">
                       {title || "Post Title"}
@@ -206,7 +206,7 @@ export default function CreatePostPage() {
                       content={content || "Your content will appear here..."}
                     />
                   </div>
-                </CardContent>
+                </Card.Content>
               </Card>
             )}
           </div>

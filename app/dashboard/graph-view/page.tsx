@@ -1,11 +1,5 @@
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Plus } from "lucide-react";
 
 export default function AtomsPage() {
@@ -25,19 +19,19 @@ export default function AtomsPage() {
       </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Getting Started</CardTitle>
-          <CardDescription>
+        <Card.Header>
+          <Card.Title>Getting Started</Card.Title>
+          <Card.Description>
             Atoms are small, focused pieces of knowledge that you can connect
             and build upon.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+          </Card.Description>
+        </Card.Header>
+        <Card.Content>
           <p className="text-muted-foreground">
             Start creating your first atom to begin building your knowledge
             base.
           </p>
-        </CardContent>
+        </Card.Content>
       </Card>
     </div>
   );

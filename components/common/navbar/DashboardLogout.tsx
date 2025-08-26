@@ -13,7 +13,7 @@ export default function DashboardLogout() {
       {pathname.startsWith("/dashboard") ? (
         <form>
           {" "}
-          <Button formAction={signOut} variant="destructive">
+          <Button formAction={signOut} variant="secondary">
             LogOut
           </Button>
         </form>

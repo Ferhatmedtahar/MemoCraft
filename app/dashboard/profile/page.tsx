@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { createClientForServer } from "@/utils/supabase/server";
 
@@ -24,11 +18,11 @@ export default async function ProfilePage() {
       </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle>Account Information</CardTitle>
-          <CardDescription>Your account details and settings</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
+        <Card.Header>
+          <Card.Title>Account Information</Card.Title>
+          <Card.Description>Your account details and settings</Card.Description>
+        </Card.Header>
+        <Card.Content className="space-y-4">
           <div>
             <label className="text-sm font-medium text-foreground">Email</label>
             <p className="text-muted-foreground">{user?.email}</p>
@@ -42,7 +36,7 @@ export default async function ProfilePage() {
             </p>
           </div>
           <Button variant="outline">Edit Profile</Button>
-        </CardContent>
+        </Card.Content>
       </Card>
     </div>
   );
