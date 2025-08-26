@@ -15,7 +15,7 @@ function FolderComponent({ folder, atomCount = 0 }: FolderComponentProps) {
   return (
     <div
       ref={setNodeRef}
-      className={`relative flex items-center justify-between rounded-lg p-4 transition-all duration-200 ${
+      className={`relative flex items-center justify-between  p-4 transition-all duration-200 ${
         isOver
           ? "ring-2 ring-white ring-opacity-50 transform scale-105"
           : "hover:transform hover:scale-102"
@@ -28,6 +28,7 @@ function FolderComponent({ folder, atomCount = 0 }: FolderComponentProps) {
           : "0 4px 16px rgba(0,0,0,0.1)",
       }}
     >
+      {" "}
       {/* Folder Icon and Title */}
       <div className="flex items-center gap-3">
         {isOver ? (
@@ -36,20 +37,18 @@ function FolderComponent({ folder, atomCount = 0 }: FolderComponentProps) {
           <Folder className="h-6 w-6 text-white" />
         )}
         <div>
-          <h2 className="text-lg font-semibold text-white">{folder.title}</h2>
+          <h2 className="text-lg font-semibold text-white">{folder.name}</h2>
           <p className="text-white/70 text-sm">
             {atomCount} {atomCount === 1 ? "atom" : "atoms"}
           </p>
         </div>
       </div>
-
       {/* Drop indicator */}
       {isOver && (
         <div className="absolute inset-0 rounded-lg border-2 border-dashed border-white/50 bg-white/10 flex items-center justify-center">
           <span className="text-white font-medium">Drop atom here</span>
         </div>
       )}
-
       {/* Atom count badge */}
       {atomCount > 0 && (
         <div className="bg-white/20 backdrop-blur-sm rounded-full px-3 py-1">

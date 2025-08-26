@@ -2,6 +2,7 @@ import { createClientForServer } from "@/utils/supabase/server";
 import AuthForm from "./AuthForm";
 import DashboardLogout from "./DashboardLogout";
 import Logo from "./Logo";
+import ThemeButton from "./ThemeButton";
 
 async function NavBar() {
   const supabase = await createClientForServer();
@@ -14,8 +15,10 @@ async function NavBar() {
       <div className=" mx-auto px-4 pr-8 py-4  bg-background">
         <div className="flex items-center justify-between">
           <Logo />
-
-          {user ? <DashboardLogout /> : <AuthForm />}
+          <div className="flex items-center gap-4">
+            <ThemeButton />
+            {user ? <DashboardLogout /> : <AuthForm />}
+          </div>
         </div>
       </div>
     </header>

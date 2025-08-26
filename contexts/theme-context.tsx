@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-type Theme = "blue" | "white" | "pink" | "green" | "purple" | "orange";
+type Theme = "blue" | "white" | "pink" | "green" | "purple" | "orange" | "dark" | "slate" | "teal" | "amber" | "crimson" | "emerald";
 
 interface ThemeContextType {
   theme: Theme;
@@ -107,6 +107,106 @@ const themeConfigs = {
     cardForeground: "oklch(0.2 0.1 50)", // Card text (dark orange)
     mutedForeground: "oklch(0.5 0.08 50)", // Muted text
     shadow: "0 4px 0 0 oklch(0.35 0.15 50)", // Dark orange shadow
+  },
+  dark: {
+    name: "Midnight Dark",
+    primary: "oklch(0.8 0.1 240)", // Light blue accent
+    primaryForeground: "oklch(0.1 0.05 240)", // Dark blue-gray
+    secondary: "oklch(0.15 0.02 240)", // Dark gray
+    secondaryForeground: "oklch(0.9 0.05 240)", // Light gray
+    background: "oklch(0.08 0.01 240)", // Very dark gray
+    foreground: "oklch(0.95 0.02 240)", // Almost white
+    accent: "oklch(0.7 0.15 240)", // Blue accent
+    accentForeground: "oklch(0.1 0.05 240)", // Dark text
+    border: "oklch(0.25 0.02 240)", // Dark border
+    card: "oklch(0.12 0.01 240)", // Dark card background
+    cardForeground: "oklch(0.95 0.02 240)", // Light card text
+    mutedForeground: "oklch(0.6 0.02 240)", // Muted text
+    shadow: "0 4px 0 0 oklch(0.05 0.01 240)", // Very dark shadow
+  },
+
+  slate: {
+    name: "Professional Slate",
+    primary: "oklch(0.45 0.08 240)", // Slate blue
+    primaryForeground: "oklch(1 0 0)", // White
+    secondary: "oklch(0.85 0.02 240)", // Light slate
+    secondaryForeground: "oklch(0.3 0.05 240)", // Dark slate
+    background: "oklch(0.97 0.01 240)", // Off-white with slate tint
+    foreground: "oklch(0.2 0.05 240)", // Dark slate text
+    accent: "oklch(0.55 0.1 240)", // Medium slate
+    accentForeground: "oklch(1 0 0)", // White
+    border: "oklch(0.75 0.03 240)", // Slate border
+    card: "oklch(1 0 0)", // White card
+    cardForeground: "oklch(0.2 0.05 240)", // Dark slate text
+    mutedForeground: "oklch(0.5 0.03 240)", // Muted slate
+    shadow: "0 4px 0 0 oklch(0.35 0.08 240)", // Slate shadow
+  },
+
+  teal: {
+    name: "Ocean Teal",
+    primary: "oklch(0.55 0.18 180)", // Teal
+    primaryForeground: "oklch(1 0 0)", // White
+    secondary: "oklch(0.88 0.08 180)", // Light teal
+    secondaryForeground: "oklch(0.25 0.12 180)", // Dark teal
+    background: "oklch(0.98 0.01 180)", // Very light teal
+    foreground: "oklch(0.2 0.1 180)", // Dark teal text
+    accent: "oklch(0.65 0.15 180)", // Medium teal
+    accentForeground: "oklch(1 0 0)", // White
+    border: "oklch(0.75 0.1 180)", // Teal border
+    card: "oklch(1 0 0)", // White card
+    cardForeground: "oklch(0.2 0.1 180)", // Dark teal text
+    mutedForeground: "oklch(0.5 0.08 180)", // Muted teal
+    shadow: "0 4px 0 0 oklch(0.35 0.15 180)", // Dark teal shadow
+  },
+  amber: {
+    name: "Golden Amber",
+    primary: "oklch(0.65 0.15 80)", // Amber
+    primaryForeground: "oklch(0.1 0.05 80)", // Dark amber text
+    secondary: "oklch(0.9 0.08 80)", // Light amber
+    secondaryForeground: "oklch(0.25 0.12 80)", // Dark amber
+    background: "oklch(0.98 0.02 80)", // Very light amber
+    foreground: "oklch(0.2 0.1 80)", // Dark amber text
+    accent: "oklch(0.7 0.12 80)", // Medium amber
+    accentForeground: "oklch(0.1 0.05 80)", // Dark text
+    border: "oklch(0.75 0.1 80)", // Amber border
+    card: "oklch(1 0 0)", // White card
+    cardForeground: "oklch(0.2 0.1 80)", // Dark amber text
+    mutedForeground: "oklch(0.5 0.08 80)", // Muted amber
+    shadow: "0 4px 0 0 oklch(0.4 0.12 80)", // Dark amber shadow
+  },
+
+  crimson: {
+    name: "Deep Crimson",
+    primary: "oklch(0.55 0.2 20)", // Crimson red
+    primaryForeground: "oklch(1 0 0)", // White
+    secondary: "oklch(0.88 0.08 20)", // Light crimson
+    secondaryForeground: "oklch(0.25 0.15 20)", // Dark crimson
+    background: "oklch(0.98 0.01 20)", // Very light crimson
+    foreground: "oklch(0.2 0.12 20)", // Dark crimson text
+    accent: "oklch(0.65 0.18 20)", // Medium crimson
+    accentForeground: "oklch(1 0 0)", // White
+    border: "oklch(0.75 0.1 20)", // Crimson border
+    card: "oklch(1 0 0)", // White card
+    cardForeground: "oklch(0.2 0.12 20)", // Dark crimson text
+    mutedForeground: "oklch(0.5 0.1 20)", // Muted crimson
+    shadow: "0 4px 0 0 oklch(0.35 0.18 20)", // Dark crimson shadow
+  },
+
+  emerald: {
+    name: "Emerald Green",
+    primary: "oklch(0.55 0.18 160)", // Emerald
+    primaryForeground: "oklch(1 0 0)", // White
+    secondary: "oklch(0.88 0.08 160)", // Light emerald
+    secondaryForeground: "oklch(0.25 0.12 160)", // Dark emerald
+    background: "oklch(0.98 0.01 160)", // Very light emerald
+    foreground: "oklch(0.2 0.1 160)", // Dark emerald text
+    accent: "oklch(0.65 0.15 160)", // Medium emerald
+    accentForeground: "oklch(1 0 0)", // White
+    border: "oklch(0.75 0.1 160)", // Emerald border
+    card: "oklch(1 0 0)", // White card
+    cardForeground: "oklch(0.2 0.1 160)", // Dark emerald text
+    mutedForeground: "oklch(0.5 0.08 160)", // Muted emerald
+    shadow: "0 4px 0 0 oklch(0.35 0.15 160)", // Dark emerald shadow
   },
 };
 

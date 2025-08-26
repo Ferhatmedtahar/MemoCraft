@@ -8,6 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useTheme } from "@/contexts/theme-context";
+import { themeOptions } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import {
   Atom,
@@ -67,23 +68,6 @@ export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
-
-  const themeOptions = [
-    { value: "blue" as const, label: "Ocean Blue", color: "bg-blue-500" },
-    {
-      value: "white" as const,
-      label: "Clean White",
-      color: "bg-gray-100 border border-gray-300",
-    },
-    { value: "pink" as const, label: "Bubblegum Pink", color: "bg-pink-500" },
-    { value: "green" as const, label: "Forest Green", color: "bg-green-500" },
-    { value: "purple" as const, label: "Royal Purple", color: "bg-purple-500" },
-    {
-      value: "orange" as const,
-      label: "Sunset Orange",
-      color: "bg-orange-500",
-    },
-  ];
 
   return (
     <div
