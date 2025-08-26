@@ -82,21 +82,14 @@ export default function CreatePostPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Loading overlay */}
-      {/* {isProcessing && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-lg shadow-lg flex items-center space-x-3">
-            <Loader2 className="h-6 w-6 animate-spin" />
-            <span className="text-lg font-medium">
-              {aiFormatting ? "Formatting with AI..." : "Creating post..."}
-            </span>
-          </div>
-        </div>
-      )} */}
-
       <header className="border-b">
         <div className="container mx-auto px-4 py-4">
-          <Button variant="outline" asChild disabled={isProcessing}>
+          <Button
+            className="w-fit"
+            variant="outline"
+            asChild
+            disabled={isProcessing}
+          >
             <Link href="/">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Home
@@ -130,7 +123,7 @@ export default function CreatePostPage() {
               preview ? "lg:grid-cols-2 gap-6" : ""
             }`}
           >
-            <Card>
+            <Card className="hover:translate-0 bg-background border-primary">
               <Card.Header className="flex flex-row items-center justify-between space-y-0">
                 <Card.Title>Write Note</Card.Title>
                 <Button
@@ -177,7 +170,7 @@ export default function CreatePostPage() {
                   <Button
                     type="submit"
                     disabled={isProcessing}
-                    className="w-full"
+                    className="w-full text-center flex justify-center items-center"
                   >
                     {loading ? (
                       <>
@@ -185,7 +178,7 @@ export default function CreatePostPage() {
                         Creating...
                       </>
                     ) : (
-                      "Create note"
+                      <span>Create note</span>
                     )}
                   </Button>
                 </form>
@@ -193,14 +186,14 @@ export default function CreatePostPage() {
             </Card>
 
             {preview && (
-              <Card>
+              <Card className="hover:translate-0 bg-background border-primary">
                 <Card.Header>
                   <Card.Title>Preview</Card.Title>
                 </Card.Header>
                 <Card.Content>
                   <div className="space-y-4">
                     <h2 className="text-2xl font-bold">
-                      {title || "Post Title"}
+                      {title || "Note Title"}
                     </h2>
                     <MarkdownRenderer
                       content={content || "Your content will appear here..."}

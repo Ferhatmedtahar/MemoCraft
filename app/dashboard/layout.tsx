@@ -21,7 +21,7 @@ export default async function DashboardLayout({
 
   return (
     <ThemeProvider>
-      <div className="min-h-screen bg-background">
+      <div className="font-mono min-h-screen bg-background selection:bg-primary selection:text-primary-foreground">
         <NavBar />
         <div className="flex h-[calc(100vh-73px)]">
           <Sidebar />

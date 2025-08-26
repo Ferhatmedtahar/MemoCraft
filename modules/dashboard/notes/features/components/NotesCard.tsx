@@ -1,13 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog } from "@/components/ui/dialog";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -214,14 +207,14 @@ function NoteCard({
 
       {/* Update Modal */}
       <Dialog open={isUpdateModalOpen} onOpenChange={setIsUpdateModalOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <Dialog.Content className="sm:max-w-[425px]">
           <form onSubmit={handleUpdate}>
-            <DialogHeader>
-              <DialogTitle className="text-white">Update Atom</DialogTitle>
-              <DialogDescription className="text-white">
+            <Dialog.Header>
+              <Dialog.Title className="text-white">Update Atom</Dialog.Title>
+              <Dialog.Description className="text-white">
                 Modify your atom content
-              </DialogDescription>
-            </DialogHeader>
+              </Dialog.Description>
+            </Dialog.Header>
             <div className="grid gap-4 py-4">
               <div className="grid gap-3">
                 <label htmlFor="update-title" className="text-white text-sm">
@@ -236,7 +229,7 @@ function NoteCard({
                 />
               </div>
             </div>
-            <DialogFooter>
+            <Dialog.Footer>
               <Button
                 type="button"
                 variant="outline"
@@ -251,27 +244,27 @@ function NoteCard({
               <Button type="submit" disabled={isLoading}>
                 {isLoading ? "Updating..." : "Update"}
               </Button>
-            </DialogFooter>
+            </Dialog.Footer>
           </form>
-        </DialogContent>
+        </Dialog.Content>
       </Dialog>
 
       {/* Delete Modal */}
       <Dialog open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen}>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle className="text-white">Delete Atom</DialogTitle>
-            <DialogDescription className="text-white">
+        <Dialog.Content className="sm:max-w-[425px]">
+          <Dialog.Header>
+            <Dialog.Title className="text-white">Delete Atom</Dialog.Title>
+            <Dialog.Description className="text-white">
               Are you sure you want to delete this atom? This action cannot be
               undone.
-            </DialogDescription>
-          </DialogHeader>
+            </Dialog.Description>
+          </Dialog.Header>
           <div className="py-4">
             <div className="bg-gray-800 p-3 rounded-md">
               <p className="text-gray-300 text-sm">{note.title}</p>
             </div>
           </div>
-          <DialogFooter>
+          <Dialog.Footer>
             <Button
               type="button"
               variant="outline"
@@ -288,8 +281,8 @@ function NoteCard({
             >
               {isLoading ? "Deleting..." : "Delete"}
             </Button>
-          </DialogFooter>
-        </DialogContent>
+          </Dialog.Footer>
+        </Dialog.Content>
       </Dialog>
     </>
   );

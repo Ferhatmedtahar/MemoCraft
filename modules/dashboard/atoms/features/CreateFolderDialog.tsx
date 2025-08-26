@@ -1,13 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog } from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -22,6 +15,7 @@ import { FolderPlus } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 // import { toast } from "sonner";
+import { Label } from "@/components/ui/label";
 import * as z from "zod";
 import { createFolder } from "../data/createFolder";
 
@@ -83,19 +77,19 @@ export default function CreateFolderDialog() {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+      <Dialog.Trigger asChild>
         <Button>
           <FolderPlus className="mr-2 h-4 w-4" />
           New Folder
         </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Create New Folder</DialogTitle>
-          <DialogDescription>
+      </Dialog.Trigger>
+      <Dialog.Content className="sm:max-w-[425px]">
+        <Dialog.Header>
+          Create New Folder
+          <Dialog.Description>
             Create a new folder to organize your atoms
-          </DialogDescription>
-        </DialogHeader>
+          </Dialog.Description>
+        </Dialog.Header>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
@@ -103,7 +97,7 @@ export default function CreateFolderDialog() {
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Folder Name</FormLabel>
+                  <Label className="pt-2">Folder Name</Label>
                   <FormControl>
                     <Input
                       placeholder="Enter folder name..."
@@ -175,7 +169,7 @@ export default function CreateFolderDialog() {
             </div>
           </form>
         </Form>
-      </DialogContent>
+      </Dialog.Content>
     </Dialog>
   );
 }
