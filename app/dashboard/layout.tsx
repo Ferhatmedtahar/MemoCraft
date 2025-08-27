@@ -19,7 +19,7 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="font-mono min-h-screen bg-background selection:bg-primary selection:text-primary-foreground">
+    <div className="font-mono min-h-screen bg-background">
       <NavBar />
       <div className="flex h-[calc(100vh-73px)]">
         <Sidebar />

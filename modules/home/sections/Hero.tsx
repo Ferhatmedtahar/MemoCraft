@@ -7,35 +7,51 @@ import {
   Network,
   Palette,
   Sparkles,
-  Target,
 } from "lucide-react";
+import Cta from "./Cta";
 
 export default function HomePage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto text-center max-w-4xl">
-          <h2 className="text-5xl md:text-6xl font-bold text-foreground mb-6 leading-tight">
-            Organize, Connect, and
-            <span className="text-primary"> Learn Smarter</span>
-          </h2>
-          <p className="text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
-            Transform your notes into a powerful knowledge system with
-            AI-powered summaries, interactive knowledge graphs, and personalized
-            learning tools.
-          </p>
-          <Button
-            size="lg"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-lg"
-          >
-            Get Started with Google
-          </Button>
-        </div>
-      </section>
-
+      <div className="min-h-screen w-full relative">
+        {/* Grid Background */}
+        <div
+          className="absolute inset-0 z-0 bg-primary/10"
+          style={{
+            backgroundImage: `
+      linear-gradient(
+  to right,
+  color-mix(in oklab, var(--color-primary) 35%,transparent) 1px,
+  transparent 1px
+),
+linear-gradient(
+  to bottom,
+  color-mix(in oklab, var(--color-primary) 35%, transparent) 1px,
+  transparent 1px
+)
+`,
+            backgroundSize: "40px 40px",
+          }}
+        />
+        {/* Your Content/Components */}
+        <section className="relative z-10 py-20 px-4 min-h-[100vh] flex items-center justify-center">
+          <div className="container mx-auto text-center max-w-4xl pb-12 flex flex-col items-center gap-6">
+            <h2 className="text-5xl md:text-6xl font-bold text-foreground leading-tight">
+              Organize, Connect, and
+              <span className="text-primary"> Learn Smarter</span>
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Transform your notes into a powerful knowledge system with
+              AI-powered summaries, interactive knowledge graphs, and
+              personalized learning tools.
+            </p>
+            <Button size="lg">Get Started with Google</Button>
+          </div>
+        </section>
+      </div>
       {/* Features Section */}
-      <section className="py-16 px-4 bg-muted/30">
+      <section className="py-16 px-4 border-t-2 border-border">
         <div className="container mx-auto max-w-6xl">
           <h3 className="text-3xl font-bold text-center text-foreground mb-12">
             Everything you need to supercharge your learning
@@ -157,26 +173,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-
-      {/* Call to Action Section */}
-      <section className="py-20 px-4 bg-primary/5">
-        <div className="container mx-auto text-center max-w-3xl">
-          <Target className="w-16 h-16 text-primary mx-auto mb-6" />
-          <h3 className="text-4xl font-bold text-foreground mb-6">
-            Ready to transform your learning?
-          </h3>
-          <p className="text-xl text-muted-foreground mb-8">
-            Join thousands of students and professionals who are already
-            learning smarter with CollabNotes.
-          </p>
-          <Button
-            size="lg"
-            className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 text-lg"
-          >
-            Get Started with Google
-          </Button>
-        </div>
-      </section>
+      <Cta />
     </div>
   );
 }
