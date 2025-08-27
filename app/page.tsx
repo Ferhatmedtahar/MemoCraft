@@ -11,7 +11,7 @@ export default async function HomePage() {
   console.log(user);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background font-mono">
       <NavBar />
       <HomeScreen />
       <Footer />
