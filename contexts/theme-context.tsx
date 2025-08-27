@@ -2,7 +2,19 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 
-type Theme = "blue" | "white" | "pink" | "green" | "purple" | "orange" | "dark" | "slate" | "teal" | "amber" | "crimson" | "emerald";
+type Theme =
+  | "blue"
+  | "white"
+  | "pink"
+  | "green"
+  | "purple"
+  | "orange"
+  | "dark"
+  | "slate"
+  | "teal"
+  | "amber"
+  | "crimson"
+  | "emerald";
 
 interface ThemeContextType {
   theme: Theme;
@@ -14,7 +26,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 const themeConfigs = {
   blue: {
     name: "Ocean Blue",
-    primary: "oklch(0.45 0.2 240)", // Blue
+    primary: "oklch(0.5 0.2 240)", // Blue
     primaryForeground: "oklch(1 0 0)", // White
     secondary: "oklch(0.85 0.05 240)", // Light blue
     secondaryForeground: "oklch(0.2 0.1 240)", // Dark blue
