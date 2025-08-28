@@ -148,16 +148,25 @@ function AtomsListClient({
         {/* Unassigned atoms */}
         {atomsByFolder["unassigned"] &&
           atomsByFolder["unassigned"].length > 0 && (
-            <div className="space-y-4">
-              <div className="bg-gray-700 rounded-lg p-4">
-                <h2 className="text-lg font-semibold text-white">
-                  Unassigned Atoms ({atomsByFolder["unassigned"].length})
-                </h2>
-                <p className="text-gray-400 text-sm">
-                  Drag these atoms to folders to organize them
-                </p>
-              </div>
+            //  <div className="space-y-4">
+            //     <div className="bg-primary border-2 border-foreground p-4">
+            //       <h2 className="text-lg font-semibold text-foreground">
+            //         Unassigned Atoms ({atomsByFolder["unassigned"].length})
+            //       </h2>
+            //       <p className="text-foreground/80 text-sm">
+            //         Drag these atoms to folders to organize them
+            //       </p>
+            //     </div>
 
+            <>
+              <FolderComponent
+                folder={{
+                  id: "unassigned",
+                  name: "unassigned",
+                  color: "#6b7280",
+                }}
+                atomCount={atomsByFolder["unassigned"].length}
+              />
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ml-8">
                 {atomsByFolder["unassigned"].map((atom) => (
                   <AtomCard
@@ -182,15 +191,15 @@ function AtomsListClient({
                   />
                 ))}
               </div>
-            </div>
+            </>
           )}
       </div>
 
       {/* Drag overlay */}
       <DragOverlay>
         {activeAtom ? (
-          <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 shadow-lg opacity-90">
-            <p className="text-white text-sm">{activeAtom.title}</p>
+          <div className="bg-primary/80 border-2 border-card-foreground p-4 shadow-lg opacity-90">
+            <p className="text-foreground text-sm">{activeAtom.title}</p>
           </div>
         ) : null}
       </DragOverlay>

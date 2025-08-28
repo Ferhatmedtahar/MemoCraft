@@ -1,13 +1,7 @@
 import CreateAtomDialog from "@/modules/dashboard/atoms/features/CreateAtomDialog";
-import { createClientForServer } from "@/utils/supabase/server";
 import AtomsListServer from "./features/components/AtomListServer";
 import CreateFolderDialog from "./features/CreateFolderDialog";
 export default async function AtomsScreen() {
-  const supabase = await createClientForServer();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  console.log("user", user);
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -17,9 +11,10 @@ export default async function AtomsScreen() {
             Your atomic notes and knowledge bits
           </p>
         </div>
-
-        <CreateAtomDialog />
-        <CreateFolderDialog />
+        <div className="flex space-x-2">
+          <CreateAtomDialog />
+          <CreateFolderDialog />
+        </div>
       </div>
 
       <AtomsListServer />

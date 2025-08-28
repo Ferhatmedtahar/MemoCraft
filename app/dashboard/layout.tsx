@@ -3,7 +3,7 @@ import NavBar from "@/components/common/navbar/NavBar";
 import { createClientForServer } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import type React from "react";
-
+import { Toaster } from "sonner";
 export default async function DashboardLayout({
   children,
 }: {
@@ -20,6 +20,11 @@ export default async function DashboardLayout({
 
   return (
     <div className="font-mono min-h-screen bg-background">
+      <Toaster
+        richColors
+        closeButton
+        className="bg-popover text-popover-foreground [&>li]:!rounded-none [&>li>div]:!rounded-none"
+      />
       <NavBar />
       <div className="flex h-[calc(100vh-73px)]">
         <Sidebar />
