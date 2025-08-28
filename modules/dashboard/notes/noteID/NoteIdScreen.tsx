@@ -4,16 +4,27 @@ import { format } from "date-fns";
 import { Pin, Star } from "lucide-react"; // lucide-react icons
 import Link from "next/link";
 import { fetchNoteById } from "../data/fetchData";
-import { NoteId } from "../types/notes.type";
 
 async function NoteIdScreen({ id }: { id: string }) {
-  const noteContent: NoteId = await fetchNoteById(id);
+  const { success, data: noteContent } = await fetchNoteById(id);
+  if (!success) {
+    return (
+      <div className="h-full flex flex-col justify-center items-center">
+        <p className="text-center text-muted-foreground mt-10">
+          Note not found
+        </p>
+        <Button className="mt-4">
+          <Link href="/dashboard/notes">Back to Notes</Link>
+        </Button>
+      </div>
+    );
+  }
 
   const createdAt = new Date(noteContent.created_at);
   const updatedAt = new Date(noteContent.updated_at);
 
   const isUpdated = noteContent.updated_at !== noteContent.created_at;
-  console.log("noteContent:", noteContent);
+
   return (
     <main className="p-4">
       {/* Title + icons */}

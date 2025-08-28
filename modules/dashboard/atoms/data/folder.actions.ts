@@ -17,6 +17,7 @@ export async function createFolder(name: string, color: string = "#6366f1") {
         name,
         color,
         user_id: user.data.user.id,
+        type: "atoms",
       })
       .select()
       .single();

@@ -18,7 +18,7 @@ function ThemeButton() {
   const { theme, setTheme } = useTheme();
   const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
-  console.log(pathname);
+
   if (pathname !== "/") return null;
   return (
     <DropdownMenu>

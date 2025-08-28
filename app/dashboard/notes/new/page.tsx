@@ -60,7 +60,6 @@ export default function CreatePostPage() {
 
     try {
       const formattedContent = await formatToMarkdownWithAI(content);
-      console.log("Formatted Content:", formattedContent);
 
       if (formattedContent && formattedContent.success) {
         setContent(formattedContent.formattedContent);

@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 
 export default function DashboardLogout() {
   const pathname = usePathname();
-  console.log(pathname);
+
   return (
     <>
       {pathname.startsWith("/dashboard") ? (

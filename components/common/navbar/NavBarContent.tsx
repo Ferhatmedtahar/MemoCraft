@@ -14,7 +14,7 @@ type NavBarContentProps = {
 
 export default function NavBarContent({ user }: NavBarContentProps) {
   const pathname = usePathname();
-  const isDashboard = pathname === "/dashboard";
+  const isDashboard = pathname.startsWith("/dashboard");
 
   return (
     <header className="border-b border-sidebar-border bg-primary/95 backdrop-blur supports-[backdrop-filter]:bg-primary/0 sticky top-0 z-50">

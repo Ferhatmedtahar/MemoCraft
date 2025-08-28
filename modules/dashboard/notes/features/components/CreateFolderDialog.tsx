@@ -10,15 +10,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FolderPlus } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-// import { toast } from "sonner";
-import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import * as z from "zod";
-import { createFolder } from "../data/createFolder";
+import { createFolder } from "../../data/folderActions";
 
 const folderFormSchema = z.object({
   title: z
@@ -59,14 +58,14 @@ export default function CreateFolderDialog() {
   const onSubmit = async (values: z.infer<typeof folderFormSchema>) => {
     setIsLoading(true);
     try {
-      const result = await createFolder(values);
+      const result = await createFolder(values.title, values.color);
 
       if (result.success) {
         toast.success("Folder created successfully!");
         form.reset();
         setOpen(false);
       } else {
-        toast.error(result.error || "Failed to create folder");
+        toast.error(result?.message || "Failed to create folder");
       }
     } catch (error) {
       toast.error("An unexpected error occurred");
@@ -88,7 +87,7 @@ export default function CreateFolderDialog() {
         <Dialog.Header>
           Create New Folder
           <Dialog.Description>
-            Create a new folder to organize your atoms
+            Create a new folder to organize your notes
           </Dialog.Description>
         </Dialog.Header>
         <Form {...form}>

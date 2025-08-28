@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { updateNote } from "../../data/notesActions";
+import { toast } from "sonner";
 
 export default function UpdateNoteScreen({
   notetitle,
@@ -25,7 +26,6 @@ export default function UpdateNoteScreen({
   const [preview, setPreview] = useState(false);
   const [title, setTitle] = useState(notetitle || "Your Note Title");
   const [content, setContent] = useState(notecontent || "Your note content...");
-
   const [loading, setLoading] = useState(false);
   const [aiFormatting, setAiFormatting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -51,7 +51,7 @@ export default function UpdateNoteScreen({
       setError(
         error instanceof Error ? error.message : "Failed to create post"
       );
-      // toast.error("Failed to create post. Please try again.");
+      toast.error("Failed to create post. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -59,7 +59,7 @@ export default function UpdateNoteScreen({
 
   const handleAIFormat = async () => {
     if (!content.trim()) {
-      // toast.error("Please add some content to format");
+      toast.error("Please add some content to format");
       return;
     }
 
@@ -68,18 +68,17 @@ export default function UpdateNoteScreen({
 
     try {
       const formattedContent = await formatToMarkdownWithAI(content);
-      console.log("Formatted Content:", formattedContent);
 
       if (formattedContent && formattedContent.success) {
         setContent(formattedContent.formattedContent);
-        // toast.success("Content formatted successfully!");
+        toast.success("Content formatted successfully!");
       } else {
         throw new Error("AI formatting failed");
       }
     } catch (error) {
       console.error("AI formatting failed:", error);
       setError(error instanceof Error ? error.message : "AI formatting failed");
-      // toast.error("Failed to format content. Please try again.");
+      toast.error("Failed to format content. Please try again.");
     } finally {
       setAiFormatting(false);
     }

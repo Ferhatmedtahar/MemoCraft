@@ -16,12 +16,6 @@ const signInWith = (provider: Provider) => async () => {
     },
   });
 
-  console.log(data);
-
-  if (error) {
-    console.log(error);
-  }
-
   redirect(data.url!);
 };
 

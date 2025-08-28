@@ -35,6 +35,7 @@ export async function fetchFolders() {
   const { data } = await supabase
     .from("folders")
     .select("*")
+    .eq("folder_type", "atoms")
     .eq("user_id", user.data.user.id);
   return data;
 }

@@ -34,24 +34,25 @@ export async function fetchFolders() {
     const user = await supabase.auth.getUser();
 
     if (!user.data.user) {
-      return null;
+      return { success: false, message: "User not authenticated" };
     }
 
     const { data, error } = await supabase
       .from("folders")
       .select("*")
+      .eq("folder_type", "notes")
       .eq("user_id", user.data.user.id)
       .order("created_at", { ascending: false });
 
     if (error) {
       console.error("Error fetching folders:", error);
-      return null;
+      return { success: false, message: "Failed to fetch folders" };
     }
 
-    return data;
+    return { success: true, data };
   } catch (error) {
     console.error("Error in fetchFolders:", error);
-    return null;
+    return { success: false, message: "An error occurred" };
   }
 }
 
@@ -61,24 +62,25 @@ export async function fetchNoteById(id: string) {
     const user = await supabase.auth.getUser();
 
     if (!user.data.user) {
-      return null;
+      return { success: false, message: "User not authenticated" };
     }
 
     const { data, error } = await supabase
       .from("notes")
       .select("*")
       .eq("id", id)
+      // .eq("folder_type", "notes")
       .eq("user_id", user.data.user.id)
       .single();
 
     if (error) {
       console.error("Error fetching note:", error);
-      return null;
+      return { success: false, message: "Note not found" };
     }
 
-    return data;
+    return { data, success: true };
   } catch (error) {
     console.error("Error in fetchNoteById:", error);
-    return null;
+    return { success: false, message: "An error occurred" };
   }
 }

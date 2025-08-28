@@ -15,8 +15,8 @@ import {
   updateNoteFolder,
 } from "../../data/notesActions";
 import { Folder } from "../../types/folder.type";
-import NoteCard from "../components/NotesCard";
 import FolderComponent from "../components/FolderComponents";
+import NoteCard from "../components/NotesCard";
 
 interface Note {
   id: string;
@@ -74,10 +74,10 @@ function NotesListClient({
 
   if (!initialNotes || initialNotes.length === 0) {
     return (
-      <div className="text-white flex items-center justify-center h-full">
+      <div className=" text-foreground flex items-center justify-center h-full">
         <div className="text-center">
           <p className="text-lg mb-2">No Notes found</p>
-          <p className="text-gray-400 text-sm">
+          <p className=" text-foreground/80 text-sm">
             Create your first Note to get started
           </p>
         </div>
@@ -163,16 +163,25 @@ function NotesListClient({
         {/* Unassigned notes */}
         {notesByFolder["unassigned"] &&
           notesByFolder["unassigned"].length > 0 && (
-            <div className="space-y-4">
-              <div className="bg-gray-700 rounded-lg p-4">
-                <h2 className="text-lg font-semibold text-white">
-                  Unassigned Notes ({notesByFolder["unassigned"].length})
-                </h2>
-                <p className="text-gray-400 text-sm">
-                  Drag these notes to folders to organize them
-                </p>
-              </div>
+            // <div className="space-y-4">
+            //   <div className="bg-gray-700 rounded-lg p-4">
+            //     <h2 className="text-lg font-semibold text-white">
+            //       Unassigned Notes ({notesByFolder["unassigned"].length})
+            //     </h2>
+            //     <p className="text-gray-400 text-sm">
+            //       Drag these notes to folders to organize them
+            //     </p>
+            //   </div>
 
+            <>
+              <FolderComponent
+                folder={{
+                  id: "unassigned",
+                  name: "unassigned",
+                  color: "#6b7280",
+                }}
+                NoteCount={notesByFolder["unassigned"].length}
+              />
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 ml-8">
                 {notesByFolder["unassigned"].map((note) => (
                   <NoteCard
@@ -201,15 +210,15 @@ function NotesListClient({
                   />
                 ))}
               </div>
-            </div>
+            </>
           )}
       </div>
 
       {/* Drag overlay */}
       <DragOverlay>
         {activeNote ? (
-          <div className="bg-gray-800 border border-gray-700 rounded-lg p-4 shadow-lg opacity-90">
-            <p className="text-white text-sm">{activeNote.title}</p>
+          <div className="bg-primary/80 border-2 border-card-foreground p-4 shadow-lg opacity-90">
+            <p className="text-foreground text-sm">{activeNote.title}</p>
           </div>
         ) : null}
       </DragOverlay>

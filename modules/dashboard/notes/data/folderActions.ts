@@ -8,26 +8,38 @@ export async function createFolder(name: string, color: string = "#6366f1") {
     const user = await supabase.auth.getUser();
 
     if (!user.data.user) {
-      throw new Error("User not authenticated");
+      return { success: false, message: "User not authenticated" };
     }
+
+    // Ensure all required fields are explicitly set
+    const folderData = {
+      name: name.trim(),
+      color: color,
+      user_id: user.data.user.id,
+      folder_type: "notes", // Changed from "folder_type" to "type" and value from "notes" to "notes"
+    };
 
     const { data, error } = await supabase
       .from("folders")
-      .insert({
-        name,
-        color,
-        user_id: user.data.user.id,
-      })
+      .insert(folderData)
       .select()
       .single();
 
-    if (error) throw error;
+    if (error) {
+      console.error("Supabase insert error:", error);
+      throw error;
+    }
 
-    revalidatePath("/");
+    console.log("Folder created successfully:", data);
+    revalidatePath("/dashboard/notes");
     return { success: true, data };
   } catch (error) {
     console.error("Error creating folder:", error);
-    throw new Error("Failed to create folder");
+    return {
+      success: false,
+      message:
+        error instanceof Error ? error.message : "Failed to create folder",
+    };
   }
 }
 
@@ -37,11 +49,11 @@ export async function updateFolder(id: string, name: string, color?: string) {
     const user = await supabase.auth.getUser();
 
     if (!user.data.user) {
-      throw new Error("User not authenticated");
+      return { success: false, message: "User not authenticated" };
     }
 
     const updateData: any = {
-      name,
+      name: name.trim(),
       updated_at: new Date().toISOString(),
     };
 
@@ -49,19 +61,28 @@ export async function updateFolder(id: string, name: string, color?: string) {
       updateData.color = color;
     }
 
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from("folders")
       .update(updateData)
       .eq("id", id)
-      .eq("user_id", user.data.user.id);
+      .eq("user_id", user.data.user.id)
+      .select()
+      .single();
 
-    if (error) throw error;
+    if (error) {
+      console.error("Error updating folder:", error);
+      throw error;
+    }
 
-    revalidatePath("/");
-    return { success: true };
+    revalidatePath("/dashboard/notes");
+    return { success: true, data };
   } catch (error) {
     console.error("Error updating folder:", error);
-    throw new Error("Failed to update folder");
+    return {
+      success: false,
+      message:
+        error instanceof Error ? error.message : "Failed to update folder",
+    };
   }
 }
 
@@ -71,15 +92,23 @@ export async function deleteFolder(id: string) {
     const user = await supabase.auth.getUser();
 
     if (!user.data.user) {
-      throw new Error("User not authenticated");
+      return { success: false, message: "User not authenticated" };
     }
 
     // First, move all notes in this folder to unassigned (set folder_id to null)
-    await supabase
+    const { error: notesError } = await supabase
       .from("notes")
-      .update({ folder_id: null })
+      .update({
+        folder_id: null,
+        updated_at: new Date().toISOString(),
+      })
       .eq("folder_id", id)
       .eq("user_id", user.data.user.id);
+
+    if (notesError) {
+      console.error("Error updating notes:", notesError);
+      throw notesError;
+    }
 
     // Then delete the folder
     const { error } = await supabase
@@ -88,12 +117,51 @@ export async function deleteFolder(id: string) {
       .eq("id", id)
       .eq("user_id", user.data.user.id);
 
-    if (error) throw error;
+    if (error) {
+      console.error("Error deleting folder:", error);
+      throw error;
+    }
 
-    revalidatePath("/");
+    revalidatePath("/dashboard/notes");
     return { success: true };
   } catch (error) {
     console.error("Error deleting folder:", error);
-    throw new Error("Failed to delete folder");
+    return {
+      success: false,
+      message:
+        error instanceof Error ? error.message : "Failed to delete folder",
+    };
+  }
+}
+
+// Helper function to get all folders for a user
+export async function getUserFolders() {
+  try {
+    const supabase = await createClientForServer();
+    const user = await supabase.auth.getUser();
+
+    if (!user.data.user) {
+      return { success: false, message: "User not authenticated" };
+    }
+
+    const { data, error } = await supabase
+      .from("folders")
+      .select("*")
+      .eq("user_id", user.data.user.id)
+      .eq("type", "notes") // Changed from "folder_type" to "type"
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("Error fetching folders:", error);
+      throw error;
+    }
+
+    return { success: true, data };
+  } catch (error) {
+    console.error("Error getting user folders:", error);
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to get folders",
+    };
   }
 }

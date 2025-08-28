@@ -5,6 +5,7 @@ import {
   DragOverlay,
   DragStartEvent,
 } from "@dnd-kit/core";
+import { Atom } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
@@ -69,13 +70,11 @@ function AtomsListClient({
 
   if (!initialAtoms || initialAtoms.length === 0) {
     return (
-      <div className="text-white flex items-center justify-center h-full">
-        <div className="text-center">
-          <p className="text-lg mb-2">No atoms found</p>
-          <p className="text-gray-400 text-sm">
-            Create your first atom to get started
-          </p>
-        </div>
+      <div className=" h-[75%] flex items-center justify-center text-muted-foreground text-bold text-xl ">
+        <p className=" flex flex-col  justify-center items-center gap-4 bg-secondary/70 border-4 border-secondary p-4">
+          <Atom className="w-12 h-12" />
+          <span>Start by creating your first atom!</span>
+        </p>
       </div>
     );
   }

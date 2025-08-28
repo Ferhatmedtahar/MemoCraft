@@ -18,6 +18,7 @@ export async function createFolder(folderData: {
     const { data, error } = await supabase.from("folders").insert({
       name: title,
       color,
+      folder_type: "atoms",
       user_id: user.data.user.id,
     });
 
