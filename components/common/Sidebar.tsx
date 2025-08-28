@@ -71,21 +71,18 @@ export default function Sidebar() {
   const pathname = usePathname();
   const { theme, setTheme } = useTheme();
 
-  // Force collapse on mobile
   useEffect(() => {
     if (isMobile) {
       setCollapsed(true);
     }
   }, [isMobile]);
 
-  // Prevent manual expansion on mobile
   const handleToggle = () => {
     if (!isMobile) {
       setCollapsed(!collapsed);
     }
   };
 
-  // Always collapsed on mobile, otherwise use state
   const isCollapsed = isMobile || collapsed;
 
   return (
@@ -95,29 +92,30 @@ export default function Sidebar() {
         isCollapsed ? "w-16" : "w-48 lg:w-64"
       )}
     >
-      {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-sidebar-border">
-        {!isCollapsed && (
-          <h2 className="text-lg font-semibold text-sidebar-foreground">
-            Dashboard
-          </h2>
-        )}
-        {/* Hide toggle button on mobile or show appropriate icon */}
-        {!isMobile && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleToggle}
-            className="text-sidebar-foreground hover:bg-sidebar-accent/20"
-          >
-            {collapsed ? (
-              <ChevronRight className="h-4 w-4" />
-            ) : (
-              <ChevronLeft className="h-4 w-4" />
-            )}
-          </Button>
-        )}
-      </div>
+      {isMobile ? null : (
+        <div className="flex items-center justify-between p-4 border-b border-sidebar-border">
+          {!isCollapsed && (
+            <h2 className="text-lg font-semibold text-sidebar-foreground">
+              Dashboard
+            </h2>
+          )}
+
+          {!isMobile && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleToggle}
+              className="text-sidebar-foreground hover:bg-sidebar-accent/20"
+            >
+              {collapsed ? (
+                <ChevronRight className="h-4 w-4" />
+              ) : (
+                <ChevronLeft className="h-4 w-4" />
+              )}
+            </Button>
+          )}
+        </div>
+      )}
 
       {/* Navigation */}
       <nav className="flex-1 p-2 flex flex-col gap-2">

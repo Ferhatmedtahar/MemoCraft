@@ -1,14 +1,11 @@
 import AuthForm from "@/components/common/navbar/AuthForm";
 import { Button } from "@/components/ui/button";
-import { createClientForServer } from "@/utils/supabase/server";
+import { User } from "@supabase/supabase-js";
 import { Target } from "lucide-react";
 
-async function Cta() {
-  const supabase = await createClientForServer();
-  const user = await supabase.auth.getUser();
-  console.log(user);
+async function Cta({ user }: { user: User | null }) {
   return (
-    <section className="py-20 px-4 ">
+    <section className="py-20 px-4 border-t-2 border-border">
       <div className="container mx-auto text-center max-w-4xl flex flex-col items-center gap-6">
         <div>
           <Target className="w-16 h-16 text-primary mx-auto mb-4" />

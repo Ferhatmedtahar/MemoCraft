@@ -1,5 +1,7 @@
+import AuthForm from "@/components/common/navbar/AuthForm";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { createClientForServer } from "@/utils/supabase/server";
 import {
   BarChart3,
   CreditCard,
@@ -10,7 +12,12 @@ import {
 } from "lucide-react";
 import Cta from "./Cta";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const supabase = await createClientForServer();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
@@ -36,17 +43,25 @@ linear-gradient(
         />
         {/* Your Content/Components */}
         <section className="relative z-10 py-20 px-4 min-h-[100vh] flex items-center justify-center">
-          <div className="container mx-auto text-center max-w-4xl pb-12 flex flex-col items-center gap-6">
-            <h2 className="text-5xl md:text-6xl font-bold text-foreground leading-tight">
+          <div className="container mx-auto text-center max-w-4xl   mb-20   md:pb-12 flex flex-col items-center gap-6">
+            <h2 className="text-5xl md:text-6xl font-bold text-foreground leading-none">
               Organize, Connect, and
               <span className="text-primary"> Learn Smarter</span>
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               Transform your notes into a powerful knowledge system with
               AI-powered summaries, interactive knowledge graphs, and
               personalized learning tools.
             </p>
-            <Button size="lg">Get Started with Google</Button>
+            {user ? (
+              <>
+                <Button variant="secondary" size={"lg"}>
+                  Go to Dashboard
+                </Button>
+              </>
+            ) : (
+              <AuthForm />
+            )}
           </div>
         </section>
       </div>
@@ -77,7 +92,7 @@ linear-gradient(
             <Card className="border-border bg-card hover:shadow-lg transition-shadow duration-300">
               <Card.Content className="p-6">
                 <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
-                  <Network className="w-6 h-6 text-accent" />
+                  <Network className="w-6 h-6 text-primary" />
                 </div>
                 <h4 className="text-xl font-semibold text-foreground mb-2">
                   Knowledge Graph
@@ -109,7 +124,7 @@ linear-gradient(
             <Card className="border-border bg-card hover:shadow-lg transition-shadow duration-300">
               <Card.Content className="p-6">
                 <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
-                  <CreditCard className="w-6 h-6 text-accent" />
+                  <CreditCard className="w-6 h-6 text-primary" />
                 </div>
                 <h4 className="text-xl font-semibold text-foreground mb-2">
                   Flashcards
@@ -130,7 +145,7 @@ linear-gradient(
                 <h4 className="text-xl font-semibold text-foreground mb-2">
                   Themes & Personalization
                 </h4>
-                <p className="text-muted-foreground">
+                <p className="text-muted-foreground ">
                   Customize your workspace with beautiful themes and
                   personalization options.
                 </p>
@@ -141,7 +156,7 @@ linear-gradient(
             <Card className="border-border bg-card hover:shadow-lg transition-shadow duration-300">
               <Card.Content className="p-6">
                 <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
-                  <BarChart3 className="w-6 h-6 text-accent" />
+                  <BarChart3 className="w-6 h-6 text-primary" />
                 </div>
                 <h4 className="text-xl font-semibold text-foreground mb-2">
                   Statistics & Streaks
@@ -173,7 +188,7 @@ linear-gradient(
           </div>
         </div>
       </section>
-      <Cta />
+      <Cta user={user} />
     </div>
   );
 }
