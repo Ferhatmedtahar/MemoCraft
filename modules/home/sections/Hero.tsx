@@ -73,9 +73,9 @@ linear-gradient(
           </h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Notes & Folders */}
-            <Card className="border-border bg-card hover:shadow-lg transition-shadow duration-300">
+            <Card>
               <Card.Content className="p-6">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-primary/10 border-2 border-foreground/60 flex items-center justify-center mb-4">
                   <FileText className="w-6 h-6 text-primary" />
                 </div>
                 <h4 className="text-xl font-semibold text-foreground mb-2">
@@ -89,9 +89,9 @@ linear-gradient(
             </Card>
 
             {/* Knowledge Graph */}
-            <Card className="border-border bg-card hover:shadow-lg transition-shadow duration-300">
+            <Card>
               <Card.Content className="p-6">
-                <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-primary/10 border-2 border-foreground/60 flex items-center justify-center mb-4">
                   <Network className="w-6 h-6 text-primary" />
                 </div>
                 <h4 className="text-xl font-semibold text-foreground mb-2">
@@ -105,9 +105,9 @@ linear-gradient(
             </Card>
 
             {/* AI Summaries */}
-            <Card className="border-border bg-card hover:shadow-lg transition-shadow duration-300">
+            <Card>
               <Card.Content className="p-6">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-primary/10 border-2 border-foreground/60 flex items-center justify-center mb-4">
                   <Sparkles className="w-6 h-6 text-primary" />
                 </div>
                 <h4 className="text-xl font-semibold text-foreground mb-2">
@@ -121,9 +121,9 @@ linear-gradient(
             </Card>
 
             {/* Flashcards */}
-            <Card className="border-border bg-card hover:shadow-lg transition-shadow duration-300">
+            <Card>
               <Card.Content className="p-6">
-                <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-primary/10 border-2 border-foreground/60 flex items-center justify-center mb-4">
                   <CreditCard className="w-6 h-6 text-primary" />
                 </div>
                 <h4 className="text-xl font-semibold text-foreground mb-2">
@@ -137,9 +137,9 @@ linear-gradient(
             </Card>
 
             {/* Themes & Personalization */}
-            <Card className="border-border bg-card hover:shadow-lg transition-shadow duration-300">
+            <Card>
               <Card.Content className="p-6">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-primary/10 border-2 border-foreground/60 flex items-center justify-center mb-4">
                   <Palette className="w-6 h-6 text-primary" />
                 </div>
                 <h4 className="text-xl font-semibold text-foreground mb-2">
@@ -153,9 +153,9 @@ linear-gradient(
             </Card>
 
             {/* Statistics & Streaks */}
-            <Card className="border-border bg-card hover:shadow-lg transition-shadow duration-300">
+            <Card>
               <Card.Content className="p-6">
-                <div className="w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
+                <div className="w-12 h-12 bg-primary/10 border-2 border-foreground/60 flex items-center justify-center mb-4">
                   <BarChart3 className="w-6 h-6 text-primary" />
                 </div>
                 <h4 className="text-xl font-semibold text-foreground mb-2">

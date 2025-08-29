@@ -20,7 +20,6 @@ import {
   LayoutDashboard,
   Notebook,
   Palette,
-  User,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -49,19 +48,14 @@ const sidebarItems = [
     icon: Clock,
   },
   {
-    title: "Graph View",
-    href: "/dashboard/graph-view",
-    icon: GitGraph,
-  },
-  {
     title: "AI Assistant",
     href: "/dashboard/ai-assistant",
     icon: Bot,
   },
   {
-    title: "Profile",
-    href: "/dashboard/profile",
-    icon: User,
+    title: "Graph View",
+    href: "/dashboard/graph-view",
+    icon: GitGraph,
   },
 ];
 

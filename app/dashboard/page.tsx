@@ -1,37 +1,21 @@
-import { Card } from "@/components/ui/card";
-import { Atom, BookOpen, Bot, User } from "lucide-react";
+import { fetchAtoms } from "@/modules/dashboard/atoms/data/fetchData";
+import DashboardScreen from "@/modules/dashboard/dashboard/dashboardScreen";
+import { getActivityData } from "@/modules/dashboard/dashboard/data/activity.action";
+import { fetchNotes } from "@/modules/dashboard/notes/data/fetchData";
+import { createClientForServer } from "@/utils/supabase/server";
 
-export default function DashboardPage() {
-  const features = [
-    {
-      title: "Atoms",
-      description: "Manage your atomic notes and knowledge bits",
-      icon: Atom,
-      href: "/dashboard/atoms",
-    },
-    {
-      title: "Flashcards",
-      description: "Create and study with interactive flashcards",
-      icon: BookOpen,
-      href: "/dashboard/flashcards",
-    },
-    {
-      title: "AI Assistant",
-      description: "Get help from your personal AI assistant",
-      icon: Bot,
-      href: "/dashboard/ai-assistant",
-    },
-    {
-      title: "Profile",
-      description: "Manage your account and preferences",
-      icon: User,
-      href: "/dashboard/profile",
-    },
-  ];
-
+export default async function DashboardPage() {
+  // const data = await fetchDashboardData();
+  // const activityData = await getActivityData();
+  const [data, activityData] = await Promise.all([
+    fetchDashboardData(),
+    getActivityData(),
+  ]);
+  console.log("data", activityData);
   return (
     <div className="space-y-6">
-      <div>
+      <DashboardScreen data={data} activityData={activityData} />
+      {/* <div>
         <h1 className="text-3xl font-bold text-foreground">
           Welcome to your Dashboard
         </h1>
@@ -62,7 +46,29 @@ export default function DashboardPage() {
             </Card>
           );
         })}
-      </div>
+      </div> */}
     </div>
   );
+}
+async function fetchDashboardData() {
+  const supabase = await createClientForServer();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return null;
+
+  // Fetch notes and atoms
+  const notes = (await fetchNotes()) || [];
+  const atoms = (await fetchAtoms()) || [];
+
+  // For now, flashcards will be 0 since not implemented yet
+  const flashcards: any = [];
+
+  return {
+    user,
+    notes,
+    atoms,
+    flashcards,
+  };
 }
