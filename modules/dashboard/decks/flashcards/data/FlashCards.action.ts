@@ -241,7 +241,7 @@ export async function deleteFlashcard(deckId: string, cardIndex: number) {
 
     // Remove the flashcard at the specified index
     const updatedContent = (currentDeck.content || []).filter(
-      (_, index) => index !== cardIndex
+      (_: Flashcard, index: number) => index !== cardIndex
     );
 
     // Update the deck

@@ -19,7 +19,7 @@ async function IdCardPage({ params }: { params: Promise<{ id: string }> }) {
       </div>
     );
   }
-  console.log("deck", deckInfo);
+
   return <IndividualDeckScreen deckInfo={deckInfo} />;
 }
 

@@ -17,7 +17,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
-import { createDeck } from "../data/createFlashCard";
+import { createDeck } from "../data/createDeck";
 
 const deckFormSchema = z.object({
   deck_name: z
