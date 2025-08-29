@@ -11,8 +11,16 @@ export default async function DashboardPage() {
   ]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 ">
+      {/* <Suspense
+        fallback={
+          <div className="text-white flex items-center justify-center  h-full text-lg ">
+            <div className="loader" />
+          </div>
+        }
+      > */}
       <DashboardScreen data={data} activityData={activityData} />
+      {/* </Suspense> */}
       {/* <div>
         <h1 className="text-3xl font-bold text-foreground">
           Welcome to your Dashboard

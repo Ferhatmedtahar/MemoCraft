@@ -32,7 +32,7 @@ export async function createDeck(params: CreateDeckParams) {
         user_id: user.id,
         deck_name: params.deck_name,
         color: params.color,
-        content: [], // Start with empty array
+        content: [],
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       })
@@ -48,7 +48,7 @@ export async function createDeck(params: CreateDeckParams) {
     }
 
     // Revalidate the flashcards page
-    revalidatePath("/flashcards");
+    revalidatePath("/dashboard/decks");
 
     return {
       success: true,

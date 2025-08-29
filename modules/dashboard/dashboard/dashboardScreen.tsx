@@ -1,7 +1,7 @@
 "use client";
 import { Card } from "@/components/ui/card";
 import { themeConfigs, useTheme } from "@/contexts/theme-context";
-import { Activity, TrendingUp, Zap } from "lucide-react";
+import { Activity, BookOpen, TrendingUp, Zap } from "lucide-react";
 import {
   Bar,
   BarChart,
@@ -18,7 +18,6 @@ import ActivityStreakClient from "./features/activity/ActivityClient";
 import InfosCards from "./features/components/InfosCards";
 import Profile from "./features/components/Profile";
 
-// Function to process data for weekly chart
 function getWeeklyData(notes: any[], atoms: any[]) {
   const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   const today = new Date();
@@ -47,7 +46,6 @@ function getWeeklyData(notes: any[], atoms: any[]) {
   return weeklyData;
 }
 
-// Function to process data for monthly chart
 function getMonthlyData(notes: any[], atoms: any[]) {
   const monthNames = [
     "Jan",
@@ -93,44 +91,6 @@ function getMonthlyData(notes: any[], atoms: any[]) {
   return monthlyData;
 }
 
-// Function to generate streak data (GitHub-style contribution graph)
-function generateStreakData(notes: any[], atoms: any[]) {
-  const today = new Date();
-  const streakData = [];
-
-  // Generate last 365 days
-  for (let i = 364; i >= 0; i--) {
-    const date = new Date(today);
-    date.setDate(today.getDate() - i);
-    const dateStr = date.toISOString().split("T")[0];
-
-    const notesCount = notes.filter(
-      (note) => note.created_at && note.created_at.startsWith(dateStr)
-    ).length;
-
-    const atomsCount = atoms.filter(
-      (atom) => atom.created_at && atom.created_at.startsWith(dateStr)
-    ).length;
-
-    const total = notesCount + atomsCount;
-    let level = 0;
-    if (total > 0) level = 1;
-    if (total > 2) level = 2;
-    if (total > 5) level = 3;
-    if (total > 10) level = 4;
-
-    streakData.push({
-      date: dateStr,
-      count: total,
-      level,
-    });
-  }
-
-  return streakData;
-}
-
-// Streak component
-
 export default async function DashboardScreen({
   data,
   activityData,
@@ -138,10 +98,6 @@ export default async function DashboardScreen({
   data: any;
   activityData: any;
 }) {
-  if (!data) {
-    return <div>Please log in to view your dashboard.</div>;
-  }
-
   const { user, notes, atoms, flashcards } = data;
   const { theme } = useTheme();
   const themeColors = themeConfigs[theme as keyof typeof themeConfigs];
@@ -151,9 +107,20 @@ export default async function DashboardScreen({
   // Process data for charts
   const weeklyData = getWeeklyData(notes, atoms);
   const monthlyData = getMonthlyData(notes, atoms);
-  const streakData = generateStreakData(notes, atoms);
+  if (!data) {
+    return (
+      <Card className="h-full flex items-center justify-center">
+        <Card.Content className="text-center py-12">
+          <BookOpen className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+          <h3 className="text-lg font-semibold mb-2">You are not logged in!</h3>
+          <p className="text-muted-foreground mb-4">
+            Please log in to view your dashboard.
+          </p>
+        </Card.Content>
+      </Card>
+    );
+  }
 
-  // Pie chart data
   const pieData = [
     { name: "Notes", value: notes.length, color: chartFirstColor },
     { name: "Atoms", value: atoms.length, color: chartsecondColor },

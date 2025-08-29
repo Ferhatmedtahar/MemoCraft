@@ -23,6 +23,7 @@ export async function fetchDeckById(id: string) {
     .from("flashcards")
     .select("*")
     .eq("user_id", user.data.user.id)
-    .eq("id", id);
+    .eq("id", id)
+    .single();
   return { success: true, data };
 }
