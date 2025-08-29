@@ -11,6 +11,7 @@ import { ArrowLeft, Eye, Loader2, StarIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { toast } from "sonner";
 
 export default function CreatePostPage() {
   const router = useRouter();
@@ -43,7 +44,7 @@ export default function CreatePostPage() {
       setError(
         error instanceof Error ? error.message : "Failed to create post"
       );
-      // toast.error("Failed to create post. Please try again.");
+      toast.error("Failed to create post. Please try again.");
     } finally {
       setLoading(false);
     }

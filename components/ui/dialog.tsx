@@ -115,7 +115,6 @@ const DialogContent = React.forwardRef<HTMLDivElement, IDialogContentProps>(
 );
 DialogContent.displayName = "DialogContent";
 
-// Proper DialogTitle component
 interface IDialogTitleProps
   extends React.ComponentProps<typeof ReactDialog.Title> {}
 const DialogTitle = React.forwardRef<HTMLHeadingElement, IDialogTitleProps>(

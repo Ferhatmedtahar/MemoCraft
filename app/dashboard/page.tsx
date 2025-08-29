@@ -5,13 +5,11 @@ import { fetchNotes } from "@/modules/dashboard/notes/data/fetchData";
 import { createClientForServer } from "@/utils/supabase/server";
 
 export default async function DashboardPage() {
-  // const data = await fetchDashboardData();
-  // const activityData = await getActivityData();
   const [data, activityData] = await Promise.all([
     fetchDashboardData(),
     getActivityData(),
   ]);
-  console.log("data", activityData);
+
   return (
     <div className="space-y-6">
       <DashboardScreen data={data} activityData={activityData} />
