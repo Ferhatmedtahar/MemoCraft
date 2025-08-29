@@ -44,7 +44,7 @@ const sidebarItems = [
   },
   {
     title: "Flashcards",
-    href: "/dashboard/flashcards",
+    href: "/dashboard/decks",
     icon: Clock,
   },
   {
