@@ -304,11 +304,6 @@ export default async function DashboardScreen({
               activityData={activityData}
               className="w-full"
             />
-            {/* <Suspense fallback={<ActivityStreakFallback />}>
-              <ActivityStreak className="w-full" />
-            </Suspense> */}
-            {/* <Suspense fallback={<div>Loading activity data...</div>}>
-            </Suspense>{" "} */}
           </Card.Content>
         </Card>
         <div className="grid grid-cols-1 lg:col-span-2 gap-6">
