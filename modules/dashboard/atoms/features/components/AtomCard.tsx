@@ -21,6 +21,7 @@ import {
   Trash2,
 } from "lucide-react";
 import React, { useState } from "react";
+import { useMediaQuery } from "react-responsive";
 
 interface AtomCardProps {
   atom: {
@@ -48,7 +49,7 @@ function AtomCard({
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [updateTitle, setUpdateTitle] = useState(atom.title);
   const [isLoading, setIsLoading] = useState(false);
-
+  const isTablet = useMediaQuery({ query: "(max-width: 768px)" });
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({
       id: atom.id,
@@ -157,7 +158,7 @@ function AtomCard({
         {/* Action menu */}
         <div
           className={`absolute top-3 right-3 transition-opacity duration-200 ${
-            isHovered ? "opacity-100" : "opacity-0"
+            isTablet ? "opacity-100" : isHovered ? "opacity-100" : "opacity-0"
           }`}
         >
           <DropdownMenu>

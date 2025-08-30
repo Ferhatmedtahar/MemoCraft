@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
+import { useMediaQuery } from "react-responsive";
 
 interface NoteCardProps {
   note: {
@@ -48,6 +49,7 @@ function NoteCard({
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [updateTitle, setUpdateTitle] = useState(note.title);
   const [isLoading, setIsLoading] = useState(false);
+  const isTablet = useMediaQuery({ query: "(max-width: 768px)" });
 
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({
@@ -158,10 +160,10 @@ function NoteCard({
             </p>
           </Link>
         </div>
-        {/* Action menu */}
+
         <div
           className={`absolute top-3 right-3 transition-opacity duration-200 ${
-            isHovered ? "opacity-100" : "opacity-0"
+            isTablet ? "opacity-100" : isHovered ? "opacity-100" : "opacity-0"
           }`}
         >
           <DropdownMenu>

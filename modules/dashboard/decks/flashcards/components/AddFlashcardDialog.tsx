@@ -18,9 +18,11 @@ interface Flashcard {
 interface AddFlashcardDialogProps {
   deckId: string;
   onCardAdded?: () => void;
+  className?: string;
 }
 
 export default function AddFlashcardDialog({
+  className,
   deckId,
   onCardAdded,
 }: AddFlashcardDialogProps) {
@@ -95,7 +97,7 @@ export default function AddFlashcardDialog({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>
-        <Button>
+        <Button className={className || ""}>
           <Plus className="h-4 w-4 mr-2" />
           Add Card
         </Button>

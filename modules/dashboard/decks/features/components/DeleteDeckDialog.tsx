@@ -58,7 +58,7 @@ export default function DeleteDeckDialog({
         </Dialog.Header>
 
         <div className="py-4">
-          <div className="bg-red-50 dark:bg-red-900/20 p-4 rounded-lg border border-red-200 dark:border-red-800">
+          <div className="bg-red-50 dark:bg-red-900/20 p-4  border border-red-200 dark:border-red-800">
             <div className="flex items-center space-x-2 mb-2">
               <div
                 className="w-4 h-4 rounded-full"
@@ -74,7 +74,7 @@ export default function DeleteDeckDialog({
           </div>
         </div>
 
-        <div className="bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded-lg border border-yellow-200 dark:border-yellow-800 mb-4">
+        <div className="bg-yellow-50 dark:bg-yellow-900/20 p-3 border border-yellow-200 dark:border-yellow-800 mb-4">
           <div className="flex items-start space-x-2">
             <AlertTriangle className="h-4 w-4 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" />
             <p className="text-sm text-yellow-800 dark:text-yellow-200">

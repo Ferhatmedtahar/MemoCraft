@@ -39,7 +39,7 @@ function CreateAtomDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>
-        <Button variant="default">
+        <Button className="w-full sm:w-auto flex items-center justify-center">
           <Plus className="h-4 w-4 mr-2" />
           New Atom
         </Button>

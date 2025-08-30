@@ -37,9 +37,9 @@ function IndividualDeckScreen({ deckInfo }: { deckInfo: FlashCardPageType }) {
   };
 
   return (
-    <div className="space-y-6 h-full">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-start justify-between">
+      {/* <div className="flex items-start justify-between">
         <div className="flex flex-col items-start gap-4">
           <Button variant="outline" size="sm" onClick={() => router.back()}>
             <ArrowLeft className="h-4 w-4 mr-2" />
@@ -77,8 +77,51 @@ function IndividualDeckScreen({ deckInfo }: { deckInfo: FlashCardPageType }) {
             onCardAdded={handleCardAdded}
           />
         </div>
-      </div>
+      </div> */}
 
+      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+        <div className="flex flex-col items-start gap-4">
+          <Button variant="outline" size="sm" onClick={() => router.back()}>
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Back
+          </Button>
+          <div className="flex items-center space-x-2">
+            <div
+              className="w-6 h-6 rounded-full flex-shrink-0"
+              style={{ backgroundColor: deckInfo.color }}
+            />
+            <div className="min-w-0">
+              <h1 className="text-2xl sm:text-3xl font-bold text-foreground break-words">
+                {deckInfo.deck_name}
+              </h1>
+              <p className="text-muted-foreground text-sm sm:text-base">
+                {deckInfo.content.length} flashcard
+                {deckInfo.content.length !== 1 ? "s" : ""}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col sm:flex-row  items-stretch sm:items-center gap-2 sm:space-x-2 w-full sm:w-auto">
+          <Button
+            variant="outline"
+            onClick={startStudySession}
+            disabled={deckInfo.content.length === 0}
+            className="w-full sm:w-auto "
+          >
+            <Play className="h-4 w-4 mr-2" />
+            Study
+          </Button>
+
+          <div>
+            <AddFlashcardDialog
+              className={"w-full sm:w-auto "}
+              deckId={deckInfo.id}
+              onCardAdded={handleCardAdded}
+            />
+          </div>
+        </div>
+      </div>
       {/* Flashcards List */}
       <div className="flex items-center justify-center h-[70%]">
         {deckInfo.content.length > 0 ? (

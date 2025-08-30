@@ -43,7 +43,7 @@ const sidebarItems = [
     icon: Notebook,
   },
   {
-    title: "Flashcards",
+    title: "Decks",
     href: "/dashboard/decks",
     icon: Clock,
   },

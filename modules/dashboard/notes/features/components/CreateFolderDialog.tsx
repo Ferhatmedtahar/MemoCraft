@@ -43,7 +43,11 @@ const defaultColors = [
   "#06b6d4", // cyan
 ];
 
-export default function CreateFolderDialog() {
+export default function CreateFolderDialog({
+  className,
+}: {
+  className?: string;
+}) {
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -78,9 +82,11 @@ export default function CreateFolderDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>
-        <Button>
-          <FolderPlus className="mr-2 h-4 w-4" />
-          New Folder
+        <Button className={className}>
+          <span className="flex items-center gap-2 justify-center w-full ">
+            <FolderPlus className="h-4 w-4" />
+            New Folder
+          </span>
         </Button>
       </Dialog.Trigger>
       <Dialog.Content className="sm:max-w-[425px]">

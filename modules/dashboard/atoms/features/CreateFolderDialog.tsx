@@ -79,7 +79,7 @@ export default function CreateFolderDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <Dialog.Trigger asChild>
-        <Button>
+        <Button className="w-full sm:w-auto flex items-center justify-center">
           <FolderPlus className="mr-2 h-4 w-4" />
           New Folder
         </Button>
