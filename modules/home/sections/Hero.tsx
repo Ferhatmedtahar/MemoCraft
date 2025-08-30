@@ -175,13 +175,13 @@ linear-gradient(
       <section className="py-16 px-4">
         <div className="container mx-auto max-w-5xl text-center">
           <h3 className="text-3xl font-bold text-foreground mb-8">
-            See CollabNotes in action
+            See MemoCraft in action
           </h3>
           <div className="bg-card border border-border rounded-2xl p-8 shadow-xl">
             <div className="aspect-video bg-muted rounded-xl flex items-center justify-center">
               <img
                 src="/placeholder.svg?height=400&width=800"
-                alt="CollabNotes Dashboard Preview"
+                alt="MemoCraft Dashboard Preview"
                 className="w-full h-full object-cover rounded-xl"
               />
             </div>

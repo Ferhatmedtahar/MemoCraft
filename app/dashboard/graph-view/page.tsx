@@ -1,5 +1,4 @@
-import { Card } from "@/components/ui/card";
-import { Clock } from "lucide-react";
+import KnowledgeGraph from "@/modules/dashboard/graph/components/Graph";
 
 export default function AtomsPage() {
   return (
@@ -12,7 +11,7 @@ export default function AtomsPage() {
         </p>
       </div>
 
-      <div className="flex flex-1 items-center justify-center">
+      {/* <div className="flex flex-1 items-center justify-center">
         <Card className="w-full max-w-md">
           <Card.Header>
             <Card.Title className="flex items-center gap-2">
@@ -25,8 +24,10 @@ export default function AtomsPage() {
           <Card.Content>
             <p className="text-muted-foreground"></p>
           </Card.Content>
-        </Card>
-      </div>
+        </Card> */}
+
+      <KnowledgeGraph />
+      {/* </div> */}
     </div>
   );
 }

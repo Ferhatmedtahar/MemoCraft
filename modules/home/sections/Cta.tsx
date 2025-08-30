@@ -15,7 +15,7 @@ async function Cta({ user }: { user: User | null }) {
         </div>
         <p className="text-xl text-muted-foreground ">
           Join thousands of students and professionals who are already learning
-          smarter with CollabNotes.
+          smarter with MemoCraft.
         </p>
         {user ? (
           <>

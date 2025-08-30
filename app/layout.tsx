@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "CollabNotes - Note Taking App",
+  title: "MemoCraft - Note Taking App",
   description:
-    "CollabNotes is a all in one note taking app that allows you to create, edit, and share notes, atoms, and flashcards.",
+    "MemoCraft is a all in one note taking app that allows you to create, edit, and share notes, atoms, and flashcards.",
 };
 
 export default function RootLayout({
