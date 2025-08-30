@@ -53,7 +53,7 @@ function DeckCard({ deck }: DeckCardProps) {
   return (
     <>
       <div
-        className="relative group w-full cursor-pointer h-full"
+        className="relative group w-full cursor-pointer h-full group"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -67,7 +67,7 @@ function DeckCard({ deck }: DeckCardProps) {
             className="w-full h-full transition-all duration-200 hover:shadow-lg cursor-pointer flex flex-col"
           >
             <Card.Header className="relative flex-1 min-h-[120px] flex flex-col">
-              <Card.Title className="pr-8 line-clamp-2">
+              <Card.Title className="pr-8 line-clamp-2 group-hover:underline">
                 {deck.deck_name}
               </Card.Title>
               <Card.Description className="flex-1 line-clamp-3 mt-2">

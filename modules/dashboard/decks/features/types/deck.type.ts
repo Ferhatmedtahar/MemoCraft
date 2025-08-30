@@ -12,6 +12,7 @@ export type FlashCardPageType = {
   deck_name: string;
   description: string;
   content: Flashcard[];
+  last_correct_answers: number;
   created_at: string;
   updated_at: string;
 };

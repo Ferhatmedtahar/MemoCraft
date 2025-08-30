@@ -48,7 +48,7 @@ const sidebarItems = [
     icon: Clock,
   },
   {
-    title: "AI Assistant",
+    title: "Assistant",
     href: "/dashboard/ai-assistant",
     icon: Bot,
   },
@@ -82,8 +82,8 @@ export default function Sidebar() {
   return (
     <div
       className={cn(
-        "flex flex-col h-full bg-sidebar border-r border-sidebar-border transition-all duration-300",
-        isCollapsed ? "w-16" : "w-48 lg:w-64"
+        "flex flex-col h-[101%] sm:h-full bg-sidebar border-r border-sidebar-border transition-all duration-300",
+        isCollapsed ? "w-16" : " md:w-46 lg:w-50 xl:w-58"
       )}
     >
       {isMobile ? null : (
@@ -137,13 +137,13 @@ export default function Sidebar() {
       </nav>
 
       {/* Theme Selector */}
-      <div className="p-4 border-t border-sidebar-border">
+      <div className="p-2 py-4 border-t border-sidebar-border">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
               className={cn(
-                "w-full justify-start text-sidebar-foreground hover:bg-sidebar-accent/20",
+                "w-full justify-start  text-sidebar-foreground hover:bg-sidebar-accent/20",
                 isCollapsed && "px-2"
               )}
             >
