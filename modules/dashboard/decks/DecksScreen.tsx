@@ -6,7 +6,6 @@ import { fetchDecks } from "./features/data/fetchData";
 async function FlashCardsScreen() {
   const { success, data } = await fetchDecks();
   if (!success) return <div>Something went wrong</div>;
-
   return (
     <div className="space-y-6">
       {/* Responsive Header */}

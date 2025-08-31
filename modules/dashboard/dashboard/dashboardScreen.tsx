@@ -18,7 +18,7 @@ import ActivityStreakClient from "./features/activity/ActivityClient";
 import InfosCards from "./features/components/InfosCards";
 import Profile from "./features/components/Profile";
 
-function getWeeklyData(notes: any[], atoms: any[]) {
+function getWeeklyData(notes: any[], atoms: any[], flashcards: any[]) {
   const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   const today = new Date();
   const weeklyData = [];
@@ -36,17 +36,23 @@ function getWeeklyData(notes: any[], atoms: any[]) {
       (atom) => atom.created_at && atom.created_at.startsWith(dateStr)
     ).length;
 
+    const flashcardsCount = flashcards.filter(
+      (flashcard) =>
+        flashcard.created_at && flashcard.created_at.startsWith(dateStr)
+    ).length;
+
     weeklyData.push({
       day: weekDays[date.getDay() === 0 ? 6 : date.getDay() - 1],
       notes: notesCount,
       atoms: atomsCount,
+      flashcards: flashcardsCount,
     });
   }
 
   return weeklyData;
 }
 
-function getMonthlyData(notes: any[], atoms: any[]) {
+function getMonthlyData(notes: any[], atoms: any[], flashcards: any[]) {
   const monthNames = [
     "Jan",
     "Feb",
@@ -80,11 +86,17 @@ function getMonthlyData(notes: any[], atoms: any[]) {
       (atom) => atom.created_at && atom.created_at.startsWith(monthStr)
     ).length;
 
+    const flashcardsCount = flashcards.filter(
+      (flashcard) =>
+        flashcard.created_at && flashcard.created_at.startsWith(monthStr)
+    ).length;
+
     monthlyData.push({
       month: monthNames[month],
       year: year,
       notes: notesCount,
       atoms: atomsCount,
+      flashcards: flashcardsCount,
     });
   }
 
@@ -104,9 +116,13 @@ export default async function DashboardScreen({
   const chartFirstColor = themeColors.chartFirst || "#8b5cf6";
   const chartsecondColor =
     themeConfigs[theme as keyof typeof themeConfigs]?.chartSecond || "#06b6d4";
+  const chartThirdColor = "#10b981"; // Green color for flashcards
+
   // Process data for charts
-  const weeklyData = getWeeklyData(notes, atoms);
-  const monthlyData = getMonthlyData(notes, atoms);
+  console.log(notes, atoms, flashcards);
+  const weeklyData = getWeeklyData(notes, atoms, flashcards);
+  const monthlyData = getMonthlyData(notes, atoms, flashcards);
+
   if (!data) {
     return (
       <Card className="h-full flex items-center justify-center">
@@ -124,7 +140,7 @@ export default async function DashboardScreen({
   const pieData = [
     { name: "Notes", value: notes.length, color: chartFirstColor },
     { name: "Atoms", value: atoms.length, color: chartsecondColor },
-    { name: "Flashcards", value: flashcards.length, color: "#10b981" },
+    { name: "Flashcards", value: flashcards.length, color: chartThirdColor },
   ].filter((item) => item.value > 0);
 
   return (
@@ -183,7 +199,7 @@ export default async function DashboardScreen({
                   This Week's Activity
                 </Card.Title>
                 <Card.Description>
-                  Notes and atoms created this week
+                  Notes, atoms, and flashcards created this week
                 </Card.Description>
               </Card.Header>
               <Card.Content>
@@ -203,6 +219,11 @@ export default async function DashboardScreen({
                       fill="var(--color-chart-second)"
                       name="Atoms"
                     />
+                    <Bar
+                      dataKey="flashcards"
+                      fill={chartThirdColor}
+                      name="Flashcards"
+                    />
                   </BarChart>
                 </ResponsiveContainer>
               </Card.Content>
@@ -216,7 +237,7 @@ export default async function DashboardScreen({
                   Monthly Activity
                 </Card.Title>
                 <Card.Description>
-                  Notes and atoms created over the past 12 months
+                  Notes, atoms, and flashcards created over the past 12 months
                 </Card.Description>
               </Card.Header>
               <Card.Content>
@@ -243,6 +264,11 @@ export default async function DashboardScreen({
                       dataKey="atoms"
                       fill="var(--color-chart-second)"
                       name="Atoms"
+                    />
+                    <Bar
+                      dataKey="flashcards"
+                      fill={chartThirdColor}
+                      name="Flashcards"
                     />
                   </BarChart>
                 </ResponsiveContainer>
