@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 function Logo() {
   return (
-    <Link href="/" className=" ">
+    <Link href="/">
       <div className="flex items-center space-x-2">
         <Image
           src="/logo_3.png"
