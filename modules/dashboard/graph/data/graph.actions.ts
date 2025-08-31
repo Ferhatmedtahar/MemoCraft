@@ -19,6 +19,8 @@ export interface KnowledgeNode {
   y?: number;
   vx?: number;
   vy?: number;
+  fx?: number | null; // D3 drag properties
+  fy?: number | null;
 }
 
 export interface KnowledgeLink {

@@ -9,6 +9,7 @@ export default function AtomsPage() {
         <h1 className="text-3xl font-bold text-foreground flex items-center gap-2 ">
           Knowledge Graph
           <Badge
+            className="text-white"
             size={"sm"}
             variant={"surface"}
             // className=" ml-2 inline-block  border-2 border-secondary-foreground bg-accent px-1 py-0.5 text-xs font-medium text-secondary-foreground "
