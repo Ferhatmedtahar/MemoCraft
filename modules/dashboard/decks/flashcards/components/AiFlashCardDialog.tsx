@@ -146,7 +146,7 @@ export default function AIFlashcardDialog({
         </Button>
       </Dialog.Trigger>
       <Dialog.Content
-        className="w-[95vw] max-w-[425px] mx-auto"
+        className="w-[95vw] max-w-[425px] sm:w-full"
         overlay={{ className: "px-4" }}
       >
         <Dialog.Header>

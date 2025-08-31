@@ -90,7 +90,7 @@ export default function CreatePostPage() {
             asChild
             disabled={isProcessing}
           >
-            <Link href="/">
+            <Link href="/dashboard/notes">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Home
             </Link>

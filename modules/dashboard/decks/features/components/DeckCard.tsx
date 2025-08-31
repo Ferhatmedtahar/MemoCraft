@@ -9,7 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Edit3, MoreVertical, Trash2 } from "lucide-react";
+import { ArrowUpRight, Edit3, MoreVertical, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -67,8 +67,11 @@ function DeckCard({ deck }: DeckCardProps) {
             className="w-full h-full transition-all duration-200 hover:shadow-lg cursor-pointer flex flex-col"
           >
             <Card.Header className="relative flex-1 min-h-[120px] flex flex-col">
-              <Card.Title className="pr-8 line-clamp-2 group-hover:underline">
-                {deck.deck_name}
+              <Card.Title className="capitalize text-lg font-semibold   line-clamp-2 group-hover:underline">
+                <div className="flex items-center gap-2">
+                  <span>{deck.deck_name}</span>
+                  <ArrowUpRight className="w-4 h-4 " />
+                </div>
               </Card.Title>
               <Card.Description className="flex-1 line-clamp-3 mt-2">
                 {deck.description

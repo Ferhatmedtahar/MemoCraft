@@ -84,7 +84,7 @@ export default function CreateFolderDialog() {
           New Folder
         </Button>
       </Dialog.Trigger>
-      <Dialog.Content className="sm:max-w-[425px]">
+      <Dialog.Content className="w-[95vw] max-w-[425px] sm:w-full">
         <Dialog.Header>
           Create New Folder
           <Dialog.Description>

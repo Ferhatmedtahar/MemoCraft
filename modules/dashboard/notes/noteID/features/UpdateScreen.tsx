@@ -10,8 +10,8 @@ import { ArrowLeft, Eye, Loader2, StarIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
-import { updateNote } from "../../data/notesActions";
 import { toast } from "sonner";
+import { updateNote } from "../../data/notesActions";
 
 export default function UpdateNoteScreen({
   notetitle,
@@ -97,7 +97,7 @@ export default function UpdateNoteScreen({
             asChild
             disabled={isProcessing}
           >
-            <Link href="/">
+            <Link href="/dashboard/notes">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back to Home
             </Link>

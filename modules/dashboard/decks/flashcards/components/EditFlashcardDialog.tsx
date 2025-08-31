@@ -96,7 +96,7 @@ export default function EditFlashcardDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <Dialog.Content className="sm:max-w-[425px]">
+      <Dialog.Content className="w-[95vw] max-w-[425px] sm:w-full">
         <Dialog.Header>
           <div className="flex items-center space-x-2">
             <Edit3 className="h-5 w-5" />

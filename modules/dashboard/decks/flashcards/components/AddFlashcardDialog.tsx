@@ -102,7 +102,7 @@ export default function AddFlashcardDialog({
           Add Card
         </Button>
       </Dialog.Trigger>
-      <Dialog.Content className="sm:max-w-[425px]">
+      <Dialog.Content className="w-[95vw] max-w-[425px] sm:w-full">
         <Dialog.Header>
           <div className="flex items-center space-x-2">
             <BookOpen className="h-5 w-5" />
