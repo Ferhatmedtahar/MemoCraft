@@ -2,6 +2,7 @@ import AuthForm from "@/components/common/navbar/AuthForm";
 import { Button } from "@/components/ui/button";
 import { User } from "@supabase/supabase-js";
 import { Target } from "lucide-react";
+import Link from "next/link";
 
 async function Cta({ user }: { user: User | null }) {
   return (
@@ -20,7 +21,7 @@ async function Cta({ user }: { user: User | null }) {
         {user ? (
           <>
             <Button variant="secondary" size={"lg"}>
-              Go to Dashboard
+              <Link href="/dashboard">Start learning</Link>
             </Button>
           </>
         ) : (

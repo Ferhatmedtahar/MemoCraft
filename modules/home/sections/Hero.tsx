@@ -10,7 +10,9 @@ import {
   Palette,
   Sparkles,
 } from "lucide-react";
+import Link from "next/link";
 import Cta from "./Cta";
+import InteractiveDemoGraph from "./InteractiveDemoGraph";
 
 export default async function HomePage() {
   const supabase = await createClientForServer();
@@ -56,7 +58,7 @@ linear-gradient(
             {user ? (
               <>
                 <Button variant="secondary" size={"lg"}>
-                  Go to Dashboard
+                  <Link href="/dashboard">Go to Dashboard</Link>
                 </Button>
               </>
             ) : (
@@ -177,7 +179,9 @@ linear-gradient(
           <h3 className="text-3xl font-bold text-foreground mb-8">
             See MemoCraft in action
           </h3>
-          <div className="bg-card border border-border rounded-2xl p-8 shadow-xl">
+
+          <InteractiveDemoGraph />
+          {/* <div className="bg-card border border-border rounded-2xl p-8 shadow-xl">
             <div className="aspect-video bg-muted rounded-xl flex items-center justify-center">
               <img
                 src="/placeholder.svg?height=400&width=800"
@@ -185,7 +189,7 @@ linear-gradient(
                 className="w-full h-full object-cover rounded-xl"
               />
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
       <Cta user={user} />
