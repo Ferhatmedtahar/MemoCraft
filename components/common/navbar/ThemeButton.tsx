@@ -16,7 +16,7 @@ import { useState } from "react";
 
 function ThemeButton() {
   const { theme, setTheme } = useTheme();
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed] = useState(false);
   const pathname = usePathname();
 
   if (pathname !== "/") return null;

@@ -196,7 +196,7 @@ export default async function DashboardScreen({
               <Card.Header>
                 <Card.Title className="flex items-center gap-2">
                   <TrendingUp className="h-5 w-5" />
-                  This Week's Activity
+                  This Week&apos;s Activity
                 </Card.Title>
                 <Card.Description>
                   Notes, atoms, and flashcards created this week

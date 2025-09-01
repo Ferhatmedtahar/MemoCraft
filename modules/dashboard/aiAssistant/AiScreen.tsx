@@ -402,8 +402,8 @@ export default function AIAssistantScreen() {
                 Select a note to start chatting
               </h3>
               <p className="text-muted-foreground">
-                Choose one of your notes above and I'll help you understand the
-                content better!
+                Choose one of your notes above and I&apos;ll help you understand
+                the content better!
               </p>
             </div>
             <div className="text-sm text-muted-foreground">

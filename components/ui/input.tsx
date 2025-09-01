@@ -56,7 +56,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         ref={ref}
         type={type}
         placeholder={placeholder}
-        className={cn(inputVariants({ variant, state }), className)}
+        className={cn(inputVariants({ variant, size, state }), className)}
         aria-invalid={props["aria-invalid"]}
         {...props}
       />

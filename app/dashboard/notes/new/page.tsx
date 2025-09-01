@@ -18,7 +18,6 @@ export default function CreatePostPage() {
   const [preview, setPreview] = useState(false);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [published, setPublished] = useState(false);
   const [loading, setLoading] = useState(false);
   const [aiFormatting, setAiFormatting] = useState(false);
   const [error, setError] = useState<string | null>(null);

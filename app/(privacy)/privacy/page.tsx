@@ -266,8 +266,8 @@ export default function PrivacyPage() {
                 <br />
               </div>
               <p className="text-muted-foreground mt-4">
-                We're committed to addressing your privacy concerns and will
-                respond to your inquiry within 30 days of receipt.
+                We&apos;re committed to addressing your privacy concerns and
+                will respond to your inquiry within 30 days of receipt.
               </p>
             </Card.Content>
           </Card>

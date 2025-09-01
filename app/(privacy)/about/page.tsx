@@ -42,12 +42,12 @@ export default function AboutPage() {
           <Card.Content className="space-y-4">
             <p className="text-lg leading-relaxed text-muted-foreground">
               MemoCraft was born from a simple belief: that learning is most
-              powerful when it's collaborative, organized, and enhanced by
-              intelligent tools. We've created a platform that transforms the
-              way people take notes, study, and share knowledge.
+              powerful when it&apos;s collaborative, organized, and enhanced by
+              intelligent tools. We&apos;ve created a platform that transforms
+              the way people take notes, study, and share knowledge.
             </p>
             <p className="text-lg leading-relaxed text-muted-foreground">
-              Whether you're a student preparing for exams, a professional
+              Whether you&apos;re a student preparing for exams, a professional
               managing complex projects, or a researcher organizing vast amounts
               of information, MemoCraft provides the tools you need to capture,
               organize, and learn from your notes more effectively than ever
@@ -169,7 +169,7 @@ export default function AboutPage() {
               <Card.Content className="text-center p-6">
                 <Card.Title className="mb-3">Privacy First</Card.Title>
                 <Card.Description>
-                  Your notes and data belong to you. We're committed to
+                  Your notes and data belong to you. We&apos;re committed to
                   protecting your privacy and never selling your information.
                 </Card.Description>
               </Card.Content>
@@ -188,8 +188,8 @@ export default function AboutPage() {
               <Card.Content className="text-center p-6">
                 <Card.Title className="mb-3">Continuous Innovation</Card.Title>
                 <Card.Description>
-                  We're constantly improving and adding new features based on
-                  user feedback and advances in technology.
+                  We&apos;re constantly improving and adding new features based
+                  on user feedback and advances in technology.
                 </Card.Description>
               </Card.Content>
             </Card>
@@ -203,8 +203,8 @@ export default function AboutPage() {
           </Card.Header>
           <Card.Content>
             <p className="text-muted-foreground mb-4">
-              If you have any questions or feedback, please don't hesitate to
-              contact us.
+              If you have any questions or feedback, please don&apos;t hesitate
+              to contact us.
             </p>
             <div className="space-x-2">
               <Link

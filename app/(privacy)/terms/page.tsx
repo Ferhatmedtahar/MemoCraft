@@ -66,7 +66,8 @@ export default function TermsPage() {
               <div className="flex items-start space-x-3">
                 <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
                 <p className="text-sm">
-                  We provide the service "as is" with reasonable effort
+                  We provide the service &quot;as is&quot; with reasonable
+                  effort
                 </p>
               </div>
               <div className="flex items-start space-x-3">
@@ -87,11 +88,11 @@ export default function TermsPage() {
             </Card.Header>
             <Card.Content>
               <p className="text-muted-foreground">
-                By accessing or using MemoCraft ("the Service"), you agree to be
-                bound by these Terms of Service ("Terms"). If you do not agree
-                to these Terms, please do not use the Service. These Terms apply
-                to all users of the Service, including visitors, registered
-                users, and paying customers.
+                By accessing or using MemoCraft (&quot;the Service&quot;), you
+                agree to be bound by these Terms of Service (&quot;Terms&quot;).
+                If you do not agree to these Terms, please do not use the
+                Service. These Terms apply to all users of the Service,
+                including visitors, registered users, and paying customers.
               </p>
             </Card.Content>
           </Card>
@@ -142,7 +143,7 @@ export default function TermsPage() {
                 <p className="text-muted-foreground">
                   You must be at least 13 years old to use MemoCraft. If you are
                   between 13 and 18 years old, you confirm that you have your
-                  parent or guardian's permission to use the Service.
+                  parent or guardian&apos;s permission to use the Service.
                 </p>
               </div>
             </Card.Content>
@@ -157,8 +158,8 @@ export default function TermsPage() {
                 <h3 className="font-semibold mb-2">Your Content</h3>
                 <p className="text-muted-foreground">
                   You retain all rights to the content you create, upload, or
-                  share through MemoCraft ("User Content"). By using the
-                  Service, you grant us a limited, non-exclusive license to
+                  share through MemoCraft (&quot;User Content&quot;). By using
+                  the Service, you grant us a limited, non-exclusive license to
                   host, store, and display your User Content solely for the
                   purpose of providing the Service to you.
                 </p>
@@ -210,7 +211,7 @@ export default function TermsPage() {
                 </Badge>
                 <Badge variant="outline" className="mr-2 mb-2">
                   Attempt to gain unauthorized access to our systems or other
-                  users' accounts
+                  users&apos; accounts
                 </Badge>
                 <Badge variant="outline" className="mr-2 mb-2">
                   Use the Service to send spam or unsolicited communications
@@ -262,10 +263,10 @@ export default function TermsPage() {
               <div>
                 <h3 className="font-semibold mb-2">Service Disclaimer</h3>
                 <p className="text-muted-foreground">
-                  The Service is provided "as is" and "as available" without
-                  warranties of any kind. While we strive to provide a reliable
-                  and useful service, we cannot guarantee that it will meet all
-                  your needs or be error-free.
+                  The Service is provided &quot;as is&quot; and &quot;as
+                  available&quot; without warranties of any kind. While we
+                  strive to provide a reliable and useful service, we cannot
+                  guarantee that it will meet all your needs or be error-free.
                 </p>
               </div>
 
