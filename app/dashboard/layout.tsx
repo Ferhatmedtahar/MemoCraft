@@ -4,6 +4,12 @@ import { createClientForServer } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import type React from "react";
 import { Toaster } from "sonner";
+
+export const metadata = {
+  title: "Dashboard - MemoCraft",
+  description:
+    "MemoCraft is a all in one note taking app that allows you to create, edit, and share notes, atoms, and flashcards.",
+};
 export default async function DashboardLayout({
   children,
 }: {
@@ -28,7 +34,9 @@ export default async function DashboardLayout({
       <NavBar />
       <div className="flex h-[calc(100vh-73px)]">
         <Sidebar />
-        <main className="flex-1 overflow-auto p-6">{children}</main>
+        <main className="flex-1 overflow-auto py-6 px-2 md:px-6 md:py-6">
+          {children}
+        </main>
       </div>
     </div>
   );

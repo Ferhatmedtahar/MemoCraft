@@ -66,7 +66,7 @@ export default function KnowledgeGraph() {
   const [showTagModal, setShowTagModal] = useState(false);
   const [selectedNode, setSelectedNode] = useState<KnowledgeNode | null>(null);
   const [showInstructions, setShowInstructions] = useState(true);
-  const [showLegend, setShowLegend] = useState(true);
+  const [showLegend, setShowLegend] = useState(false);
 
   // Data states
   const [nodes, setNodes] = useState<KnowledgeNode[]>([]);

@@ -116,10 +116,8 @@ export default async function DashboardScreen({
   const chartFirstColor = themeColors.chartFirst || "#8b5cf6";
   const chartsecondColor =
     themeConfigs[theme as keyof typeof themeConfigs]?.chartSecond || "#06b6d4";
-  const chartThirdColor = "#10b981"; // Green color for flashcards
+  const chartThirdColor = "#10b981";
 
-  // Process data for charts
-  console.log(notes, atoms, flashcards);
   const weeklyData = getWeeklyData(notes, atoms, flashcards);
   const monthlyData = getMonthlyData(notes, atoms, flashcards);
 
@@ -146,7 +144,7 @@ export default async function DashboardScreen({
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      {/* <div className="flex items-center justify-between">
         <div className="space-y-2">
           <h1 className="text-3xl font-bold text-foreground">
             Welcome to your Dashboard
@@ -161,6 +159,30 @@ export default async function DashboardScreen({
             <span className="font-medium text-sm">Status</span>
           </div>
           <p className="text-xs text-muted-foreground">
+            {notes.length + atoms.length + flashcards.length === 0
+              ? "Ready to start your learning journey!"
+              : `You're doing great! Keep building your knowledge base.`}
+          </p>
+        </div>
+      </div> */}
+      <div className="space-y-4">
+        {/* Main title section */}
+        <div className="space-y-2">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">
+            Welcome to your Dashboard
+          </h1>
+          <p className="text-muted-foreground text-sm sm:text-base">
+            Track your progress and manage your learning journey.
+          </p>
+        </div>
+
+        {/* Status section - full width on mobile */}
+        <div className="bg-primary/10 p-3 w-fit">
+          <div className="flex items-center gap-2 mb-1">
+            <Zap className="h-4 w-4 text-primary" />
+            <span className="font-medium text-sm">Status</span>
+          </div>
+          <p className="text-xs text-muted-foreground leading-relaxed">
             {notes.length + atoms.length + flashcards.length === 0
               ? "Ready to start your learning journey!"
               : `You're doing great! Keep building your knowledge base.`}

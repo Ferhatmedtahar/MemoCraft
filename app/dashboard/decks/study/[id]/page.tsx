@@ -22,17 +22,3 @@ async function StudyPage({ params }: { params: Promise<{ id: string }> }) {
 }
 
 export default StudyPage;
-// import { fetchDeckById } from "@/modules/dashboard/decks/features/data/fetchData";
-
-// async function page({ params }: { params: Promise<{ id: string }> }) {
-//   const { id } = await params;
-//   console.log(id);
-//   const data = await fetchDeckById(id);
-//   return (
-//     <div>
-//       <pre>{JSON.stringify(data, null, 2)}</pre>
-//     </div>
-//   );
-// }
-
-// export default page;
