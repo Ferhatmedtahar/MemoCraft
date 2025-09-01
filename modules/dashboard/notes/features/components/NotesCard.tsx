@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useDraggable } from "@dnd-kit/core";
+import { CSS } from "@dnd-kit/utilities";
 import {
   Edit3,
   GripVertical,
@@ -21,7 +22,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-
+import { useMediaQuery } from "react-responsive";
 interface NoteCardProps {
   note: {
     id: string;
@@ -46,7 +47,8 @@ function NoteCard({
   const [isHovered, setIsHovered] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-
+  const [isDragMode, setIsDragMode] = useState(false);
+  const isTablet = useMediaQuery({ query: "(max-width: 768px)" });
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({
       id: note.id,
@@ -83,7 +85,7 @@ function NoteCard({
     }
   };
 
-  const style = transform
+  const style2 = transform
     ? {
         transform: `translate(${transform.x}px, ${transform.y}px)`,
         zIndex: isDragging ? 1000 : undefined,
@@ -93,12 +95,40 @@ function NoteCard({
         backgroundColor: "var(--color-secondary)",
         color: "var(--color-secondary-foreground)",
       };
+  const style = {
+    transform: CSS.Translate.toString(transform),
+    zIndex: isDragging ? 1000 : undefined,
+    backgroundColor: "var(--color-secondary)",
+    color: "var(--color-secondary-foreground)",
+    WebkitUserSelect: isDragging ? "none" : "auto",
+    userSelect: isDragging ? "none" : "auto",
+    touchAction: "none",
+  };
 
+  // Handle long press for drag mode on mobile
+  const handleTouchStart = () => {
+    const timer = setTimeout(() => {
+      setIsDragMode(true);
+      // Add haptic feedback if supported
+      if (navigator.vibrate) {
+        navigator.vibrate(50);
+      }
+    }, 500);
+
+    const cleanup = () => {
+      clearTimeout(timer);
+      document.removeEventListener("touchend", cleanup);
+      document.removeEventListener("touchmove", cleanup);
+    };
+
+    document.addEventListener("touchend", cleanup);
+    document.addEventListener("touchmove", cleanup);
+  };
   return (
     <>
       <div
         ref={setNodeRef}
-        style={style}
+        style={style2}
         className={`
           relative p-3 sm:p-4 transition-all duration-300 cursor-pointer
           border-2 border-foreground group 
@@ -111,14 +141,20 @@ function NoteCard({
         draggable={true}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        onTouchStart={handleTouchStart}
       >
         {/* Drag handle */}
         <div
           {...attributes}
           {...listeners}
           className={`absolute top-2 left-2 opacity-0 group-hover:opacity-100 sm:group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing ${
-            isDragging ? "opacity-100" : ""
-          } sm:block`}
+            isTablet ? "opacity-100" : isDragging ? "opacity-100" : ""
+          } sm:block touch-manipulation`}
+          style={{
+            touchAction: "none",
+            WebkitTouchCallout: "none",
+            WebkitUserSelect: "none",
+          }}
         >
           <GripVertical className="h-3 w-3 sm:h-4 sm:w-4" />
         </div>

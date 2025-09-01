@@ -4,6 +4,10 @@ import {
   DragEndEvent,
   DragOverlay,
   DragStartEvent,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
 } from "@dnd-kit/core";
 import { NotebookPen } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -43,7 +47,20 @@ function NotesListClient({
 }: NotesListClientProps) {
   const router = useRouter();
   const [activeNote, setActiveNote] = useState<Note | null>(null);
+  const mouseSensor = useSensor(MouseSensor, {
+    activationConstraint: {
+      distance: 8,
+    },
+  });
 
+  const touchSensor = useSensor(TouchSensor, {
+    activationConstraint: {
+      delay: 300,
+      tolerance: 8,
+    },
+  });
+
+  const sensors = useSensors(mouseSensor, touchSensor);
   // Handle drag start
   function handleDragStart(event: DragStartEvent) {
     const note = initialNotes.find((note) => note.id === event.active.id);
@@ -121,7 +138,11 @@ function NotesListClient({
   });
 
   return (
-    <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+    <DndContext
+      sensors={sensors}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+    >
       <div className="px-2 sm:px-4 space-y-4 sm:space-y-6">
         {/* Folders with their notes */}
         {initialFolders.map((folder) => (
