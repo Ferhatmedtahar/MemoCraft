@@ -41,7 +41,7 @@ async function NotesScreen() {
         <NotesListServer notesData={notesData} foldersData={foldersData} />
       ) : (
         <div className="flex items-center justify-center text-muted-foreground h-[75%] px-4">
-          <div className="flex flex-col justify-center items-center gap-4 bg-secondary/70 border-2 sm:border-4 border-secondary rounded-lg p-6 sm:p-8 text-center max-w-md">
+          <div className="flex flex-col justify-center items-center gap-4 bg-secondary/70 border-2 sm:border-4 border-secondary  p-6 sm:p-8 text-center max-w-md">
             <NotebookPenIcon className="w-10 h-10 sm:w-12 sm:h-12" />
             <span className="text-lg sm:text-xl font-semibold break-words">
               Start by creating your first note!

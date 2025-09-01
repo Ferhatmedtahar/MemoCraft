@@ -4,6 +4,10 @@ import {
   DragEndEvent,
   DragOverlay,
   DragStartEvent,
+  MouseSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
 } from "@dnd-kit/core";
 import { Atom } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -38,7 +42,21 @@ function AtomsListClient({
 }: AtomsListClientProps) {
   const router = useRouter();
   const [activeAtom, setActiveAtom] = useState<Atom | null>(null);
+  // Configure sensors for better mobile support
+  const mouseSensor = useSensor(MouseSensor, {
+    activationConstraint: {
+      distance: 8,
+    },
+  });
 
+  const touchSensor = useSensor(TouchSensor, {
+    activationConstraint: {
+      delay: 300,
+      tolerance: 8,
+    },
+  });
+
+  const sensors = useSensors(mouseSensor, touchSensor);
   // Handle drag start
   function handleDragStart(event: DragStartEvent) {
     const atom = initialAtoms.find((atom) => atom.id === event.active.id);
@@ -71,7 +89,7 @@ function AtomsListClient({
   if (!initialAtoms || initialAtoms.length === 0) {
     return (
       <div className="h-[75%] flex items-center justify-center text-muted-foreground px-4">
-        <div className="flex flex-col justify-center items-center gap-4 bg-secondary/70 border-2 sm:border-4 border-secondary rounded-lg p-6 sm:p-8 text-center max-w-md">
+        <div className="flex flex-col justify-center items-center gap-4 bg-secondary/70 border-2 sm:border-4 border-secondary  p-6 sm:p-8 text-center max-w-md">
           <Atom className="w-10 h-10 sm:w-12 sm:h-12" />
           <span className="text-lg sm:text-xl font-semibold break-words">
             Start by creating your first atom!
@@ -105,7 +123,11 @@ function AtomsListClient({
   });
 
   return (
-    <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+    <DndContext
+      sensors={sensors}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+    >
       <div className="px-2 sm:px-4 space-y-4 sm:space-y-6">
         {/* Folders with their atoms */}
         {initialFolders.map((folder) => (

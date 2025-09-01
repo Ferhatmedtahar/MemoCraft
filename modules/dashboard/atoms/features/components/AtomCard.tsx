@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { useDraggable } from "@dnd-kit/core";
+import { CSS } from "@dnd-kit/utilities";
 import {
   Edit3,
   GripVertical,
@@ -22,7 +23,6 @@ import {
 } from "lucide-react";
 import React, { useState } from "react";
 import { useMediaQuery } from "react-responsive";
-
 interface AtomCardProps {
   atom: {
     id: string;
@@ -49,12 +49,41 @@ function AtomCard({
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [updateTitle, setUpdateTitle] = useState(atom.title);
   const [isLoading, setIsLoading] = useState(false);
-
   const isTablet = useMediaQuery({ query: "(max-width: 768px)" });
+  const [isDragMode, setIsDragMode] = useState(false);
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({
       id: atom.id,
     });
+
+  // Better transform handling
+  const style = {
+    transform: CSS.Translate.toString(transform),
+    zIndex: isDragging ? 1000 : undefined,
+    backgroundColor: "var(--color-secondary)",
+    color: "var(--color-secondary-foreground)",
+    // Prevent text selection during drag
+    WebkitUserSelect: isDragging ? "none" : "auto",
+    userSelect: isDragging ? "none" : "auto",
+    // Improve touch handling
+    touchAction: "none",
+  };
+
+  // Handle long press for drag mode on mobile
+  const handleTouchStart = () => {
+    const timer = setTimeout(() => {
+      setIsDragMode(true);
+    }, 500); // 500ms long press
+
+    const cleanup = () => {
+      clearTimeout(timer);
+      document.removeEventListener("touchend", cleanup);
+      document.removeEventListener("touchmove", cleanup);
+    };
+
+    document.addEventListener("touchend", cleanup);
+    document.addEventListener("touchmove", cleanup);
+  };
 
   const handleDelete = async () => {
     if (!onDelete) return;
@@ -102,7 +131,7 @@ function AtomCard({
     }
   };
 
-  const style = transform
+  const style2 = transform
     ? {
         transform: `translate(${transform.x}px, ${transform.y}px)`,
         zIndex: isDragging ? 1000 : undefined,
@@ -117,7 +146,8 @@ function AtomCard({
     <>
       <div
         ref={setNodeRef}
-        style={style}
+        style={style2}
+        onTouchStart={handleTouchStart}
         className={`
           relative p-3 sm:p-4 transition-all duration-300 cursor-pointer
           border-2 border-foreground group 
@@ -136,8 +166,13 @@ function AtomCard({
           {...attributes}
           {...listeners}
           className={`absolute top-2 left-2 opacity-100 lg:opacity-0 group-hover:opacity-100 sm:group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing ${
-            isDragging ? "opacity-100" : ""
-          } sm:block`}
+            isTablet ? "opacity-100" : isDragging ? "opacity-100" : ""
+          } sm:block touch-manipulation`}
+          style={{
+            touchAction: "none",
+            WebkitTouchCallout: "none",
+            WebkitUserSelect: "none",
+          }}
         >
           <GripVertical className="h-3 w-3 sm:h-4 sm:w-4" />
         </div>

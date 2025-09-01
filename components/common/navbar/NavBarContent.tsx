@@ -20,9 +20,15 @@ export default function NavBarContent({ user }: NavBarContentProps) {
     <header className="border-b border-sidebar-border bg-primary/95 backdrop-blur supports-[backdrop-filter]:bg-primary/0 sticky top-0 z-50">
       <div className="mx-auto px-4 py-4 bg-background">
         <div className="flex items-center justify-between">
-          <Logo />
-
+          <p className="block md:hidden"></p>
+          <div className="hidden md:block">
+            <Logo />
+          </div>
           <div className="flex items-center gap-3">
+            <div className="block md:hidden">
+              <Logo />
+            </div>
+            {/* <Logo /> */}
             <ThemeButton />
 
             {user ? (
