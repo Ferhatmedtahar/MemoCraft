@@ -2,7 +2,7 @@ import { fetchDecks } from "@/modules/dashboard/decks/features/data/fetchData";
 import { fetchNotes } from "@/modules/dashboard/notes/data/fetchData";
 import { MetadataRoute } from "next";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const baseUrl = process.env.SITE_URL ?? "http://localhost:3000";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const { data: decks } = await fetchDecks();
