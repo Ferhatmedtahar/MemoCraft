@@ -1,8 +1,6 @@
 import { fetchDeckById } from "@/modules/dashboard/decks/features/data/fetchData";
 import StudyScreen from "@/modules/dashboard/decks/study/StudyScreen";
 import { redirect } from "next/navigation";
-// import { fetchDeckById } from "@/modules/dashboard/decks/actions/study-actions";
-// import StudyScreen from "@/modules/dashboard/decks/components/StudyScreen";
 
 async function StudyPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -13,7 +11,6 @@ async function StudyPage({ params }: { params: Promise<{ id: string }> }) {
     redirect("/dashboard");
   }
 
-  // Check if deck has flashcards
   if (!result.data.content || result.data.content.length === 0) {
     redirect(`/dashboard/deck/${id}`);
   }

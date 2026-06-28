@@ -12,7 +12,6 @@ export async function createDeck(params: CreateDeckParams) {
   try {
     const supabase = await createClientForServer();
 
-    // Get the current user
     const {
       data: { user },
       error: userError,
@@ -25,7 +24,6 @@ export async function createDeck(params: CreateDeckParams) {
       };
     }
 
-    // Insert the new deck with empty content array
     const { data, error } = await supabase
       .from("flashcards")
       .insert({

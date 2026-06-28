@@ -13,7 +13,6 @@ export async function fetchDashboardData() {
 
   if (!user) return null;
 
-  // Fetch notes, atoms, and flashcards
   const [notes, atoms, { data: flashcards }] = await Promise.all([
     fetchNotes(),
     fetchAtoms(),

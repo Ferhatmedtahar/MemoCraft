@@ -1,117 +1,9 @@
 "use server";
 
-import { createClientForServer } from "@/utils/supabase/server";
+import { callGemini } from "@/lib/gemini";
+import { checkAndUpdateAIUsage, getUserAIUsage } from "@/lib/ai-usage";
 
-export async function checkAndUpdateAIUsage() {
-  try {
-    const supabase = await createClientForServer();
-    const user = await supabase.auth.getUser();
-
-    if (!user.data.user) {
-      return {
-        success: false,
-        message: "User not authenticated",
-        canUseAI: false,
-      };
-    }
-
-    // Get user's current AI usage
-    const { data: userData, error: userError } = await supabase
-      .from("users")
-      .select("ai_req, last_ai_reset")
-      .eq("id", user.data.user.id)
-      .single();
-
-    if (userError) {
-      console.error("Error fetching user data:", userError);
-      return {
-        success: false,
-        message: "Failed to check usage",
-        canUseAI: false,
-      };
-    }
-
-    const now = new Date();
-    const lastReset = userData?.last_ai_reset
-      ? new Date(userData.last_ai_reset)
-      : null;
-    const currentUsage = userData?.ai_req || 0;
-
-    // Check if 24 hours have passed since last reset
-    const shouldReset =
-      !lastReset || now.getTime() - lastReset.getTime() > 24 * 60 * 60 * 1000;
-
-    if (shouldReset) {
-      // Reset usage count
-      const { error: resetError } = await supabase
-        .from("users")
-        .update({
-          ai_req: 1,
-          last_ai_reset: now.toISOString(),
-        })
-        .eq("id", user.data.user.id);
-
-      if (resetError) {
-        console.error("Error resetting usage:", resetError);
-        return {
-          success: false,
-          message: "Failed to update usage",
-          canUseAI: false,
-        };
-      }
-
-      return {
-        success: true,
-        canUseAI: true,
-        remainingRequests: 29,
-        message: "Usage reset for new day",
-      };
-    }
-
-    // Check if user has exceeded limit
-    if (currentUsage >= 30) {
-      const timeUntilReset =
-        24 * 60 * 60 * 1000 - (now.getTime() - lastReset!.getTime());
-      const hoursUntilReset = Math.ceil(timeUntilReset / (60 * 60 * 1000));
-
-      return {
-        success: true,
-        canUseAI: false,
-        remainingRequests: 0,
-        message: `Daily limit reached. Resets in ${hoursUntilReset} hours.`,
-      };
-    }
-
-    // Increment usage count
-    const { error: updateError } = await supabase
-      .from("users")
-      .update({ ai_req: currentUsage + 1 })
-      .eq("id", user.data.user.id);
-
-    if (updateError) {
-      console.error("Error updating usage:", updateError);
-      return {
-        success: false,
-        message: "Failed to update usage",
-        canUseAI: false,
-      };
-    }
-
-    return {
-      success: true,
-      canUseAI: true,
-      remainingRequests: 30 - (currentUsage + 1),
-      message: "Request authorized",
-    };
-  } catch (error) {
-    console.error("Error in checkAndUpdateAIUsage:", error);
-    return {
-      success: false,
-      message: "An unexpected error occurred",
-      canUseAI: false,
-    };
-  }
-}
+export { checkAndUpdateAIUsage, getUserAIUsage };
 
 export async function chatWithAI(
   noteContent: string,
@@ -119,7 +11,6 @@ export async function chatWithAI(
   conversationHistory: any[] = []
 ) {
   try {
-    // Check rate limiting first
     const usageCheck = await checkAndUpdateAIUsage();
     if (!usageCheck.success || !usageCheck.canUseAI) {
       return {
@@ -129,12 +20,6 @@ export async function chatWithAI(
       };
     }
 
-    const apiKey = process.env.GOOGLE_CLIENT_AI;
-    if (!apiKey) {
-      return { success: false, message: "AI service not available" };
-    }
-
-    // Build conversation context
     let conversationText = "";
     if (conversationHistory.length > 0) {
       conversationText = conversationHistory
@@ -162,52 +47,11 @@ Instructions:
 - Keep responses concise but thorough
 - Use examples when helpful`;
 
-    const response = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-goog-api-key": apiKey,
-        },
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [
-                {
-                  text: prompt,
-                },
-              ],
-            },
-          ],
-          generationConfig: {
-            maxOutputTokens: 1024,
-            temperature: 0.4,
-            topP: 0.8,
-            topK: 40,
-          },
-        }),
-      }
-    );
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Error response from AI API:", errorText);
-      return { success: false, message: "Failed to get AI response" };
-    }
-
-    const data = await response.json();
-
-    if (
-      !data.candidates ||
-      !data.candidates[0] ||
-      !data.candidates[0].content
-    ) {
-      console.error("Unexpected API response structure:", data);
-      return { success: false, message: "Invalid AI response" };
-    }
-
-    const aiResponse = data.candidates[0].content.parts[0]?.text || "";
+    const aiResponse = await callGemini(prompt, {
+      temperature: 0.4,
+      maxOutputTokens: 1024,
+      topK: 40,
+    });
 
     return {
       success: true,
@@ -216,113 +60,6 @@ Instructions:
     };
   } catch (error) {
     console.error("Error in chatWithAI:", error);
-    return { success: false, message: "An unexpected error occurred" };
-  }
-}
-
-export async function fetchNotes() {
-  try {
-    const supabase = await createClientForServer();
-    const user = await supabase.auth.getUser();
-
-    if (!user.data.user) {
-      return null;
-    }
-
-    const { data, error } = await supabase
-      .from("notes")
-      .select("*")
-      .eq("user_id", user.data.user.id)
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      console.error("Error fetching notes:", error);
-      return null;
-    }
-
-    return data;
-  } catch (error) {
-    console.error("Error in fetchNotes:", error);
-    return null;
-  }
-}
-
-export async function fetchNoteById(id: string) {
-  try {
-    const supabase = await createClientForServer();
-    const user = await supabase.auth.getUser();
-
-    if (!user.data.user) {
-      return { success: false, message: "User not authenticated" };
-    }
-
-    const { data, error } = await supabase
-      .from("notes")
-      .select("*")
-      .eq("id", id)
-      .eq("user_id", user.data.user.id)
-      .single();
-
-    if (error) {
-      console.error("Error fetching note:", error);
-      return { success: false, message: "Note not found" };
-    }
-
-    return { data, success: true };
-  } catch (error) {
-    console.error("Error in fetchNoteById:", error);
-    return { success: false, message: "An unexpected error occurred" };
-  }
-}
-
-export async function getUserAIUsage() {
-  try {
-    const supabase = await createClientForServer();
-    const user = await supabase.auth.getUser();
-
-    if (!user.data.user) {
-      return { success: false, message: "User not authenticated" };
-    }
-
-    const { data, error } = await supabase
-      .from("users")
-      .select("ai_req, last_ai_reset")
-      .eq("id", user.data.user.id)
-      .single();
-
-    if (error) {
-      console.error("Error fetching usage:", error);
-      return { success: false, message: "Failed to fetch usage data" };
-    }
-
-    const now = new Date();
-    const lastReset = data?.last_ai_reset ? new Date(data.last_ai_reset) : null;
-    const currentUsage = data?.ai_req || 0;
-
-    // Check if 24 hours have passed since last reset
-    const shouldReset =
-      !lastReset || now.getTime() - lastReset.getTime() > 24 * 60 * 60 * 1000;
-
-    if (shouldReset) {
-      return {
-        success: true,
-        currentUsage: 0,
-        remainingRequests: 30,
-        resetTime: null,
-      };
-    }
-
-    const timeUntilReset =
-      24 * 60 * 60 * 1000 - (now.getTime() - lastReset!.getTime());
-
-    return {
-      success: true,
-      currentUsage: Math.min(currentUsage, 30),
-      remainingRequests: Math.max(0, 30 - currentUsage),
-      resetTime: new Date(now.getTime() + timeUntilReset),
-    };
-  } catch (error) {
-    console.error("Error in getUserAIUsage:", error);
     return { success: false, message: "An unexpected error occurred" };
   }
 }

@@ -69,7 +69,6 @@ export async function fetchNoteById(id: string) {
       .from("notes")
       .select("*")
       .eq("id", id)
-      // .eq("folder_type", "notes")
       .eq("user_id", user.data.user.id)
       .single();
 

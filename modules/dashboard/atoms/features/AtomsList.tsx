@@ -73,13 +73,12 @@ function AtomsListClient({
     const atomId = active.id as string;
     const targetId = over.id as string;
 
-    // Check if dropping on a folder
     const isFolder = initialFolders.some((folder) => folder.id === targetId);
 
     if (isFolder) {
       try {
         await updateAtomFolder(atomId, targetId);
-        router.refresh(); // Refresh to show updated data
+        router.refresh();
       } catch (error) {
         console.error("Failed to update atom folder:", error);
       }

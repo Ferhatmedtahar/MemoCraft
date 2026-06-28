@@ -49,9 +49,7 @@ export default function SimpleActivityBoxes({
       <Card>
         <Card.Content className="p-6">
           <div
-            className="  shadow-[var(--theme-shadow)]  hover:shadow-none  text-primary-foreground border-2 border-foreground  transition-all outline-hidden cursor-pointer duration-200  hover:translate-y-1   w-12 h-12 bg-blue-500/10  flex items-center justify-center mb-4 "
-
-            // className="w-12 h-12 bg-blue-500/10 border-2 border-blue-500/20 flex items-center justify-center mb-4 "
+            className="shadow-[var(--theme-shadow)] hover:shadow-none text-primary-foreground border-2 border-foreground transition-all outline-hidden cursor-pointer duration-200 hover:translate-y-1 w-12 h-12 bg-blue-500/10 flex items-center justify-center mb-4"
           >
             <Calendar className="w-6 h-6 text-blue-600" />
           </div>
@@ -71,8 +69,7 @@ export default function SimpleActivityBoxes({
       <Card>
         <Card.Content className="p-6">
           <div
-            // className="w-12 h-12 bg-green-500/10 border-2 border-green-500/20 flex items-center justify-center mb-4 "
-            className="shadow-[var(--theme-shadow)]  hover:shadow-none  text-primary-foreground border-2 border-foreground  transition-all outline-hidden cursor-pointer duration-200  hover:translate-y-1  w-12 h-12 bg-green-500/10  flex items-center justify-center mb-4 "
+            className="shadow-[var(--theme-shadow)] hover:shadow-none text-primary-foreground border-2 border-foreground transition-all outline-hidden cursor-pointer duration-200 hover:translate-y-1 w-12 h-12 bg-green-500/10 flex items-center justify-center mb-4"
           >
             <Activity className="w-6 h-6 text-green-600" />
           </div>

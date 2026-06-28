@@ -39,7 +39,6 @@ export default function AIFlashcardDialog({
   const [numberOfCards, setNumberOfCards] = useState<number>(5);
   const [loadingNotes, setLoadingNotes] = useState(false);
 
-  // Fetch notes when dialog opens
   useEffect(() => {
     if (open) {
       loadNotes();
@@ -80,7 +79,6 @@ export default function AIFlashcardDialog({
 
     setIsLoading(true);
     try {
-      // Get the selected note content
       const noteResult = await fetchNoteById(selectedNoteId);
       if (!noteResult.success || !noteResult.data) {
         toast.error("Failed to fetch note content");
@@ -98,7 +96,6 @@ export default function AIFlashcardDialog({
         return;
       }
 
-      // Add each generated flashcard to the deck
       let successCount = 0;
       for (const flashcard of result.flashcards) {
         try {

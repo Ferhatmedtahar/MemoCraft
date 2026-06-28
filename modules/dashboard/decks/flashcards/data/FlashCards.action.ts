@@ -98,10 +98,9 @@ export async function addFlashcard(deckId: string, flashcard: Flashcard) {
       };
     }
 
-    // Add the new flashcard to the content array
     const updatedContent = [...(currentDeck.content || []), flashcard];
 
-    // Update the deck
+
     const { data, error } = await supabase
       .from("flashcards")
       .update({
@@ -155,7 +154,6 @@ export async function updateFlashcard(
       };
     }
 
-    // Get the current deck
     const { data: currentDeck, error: fetchError } = await supabase
       .from("flashcards")
       .select("content")
@@ -170,11 +168,10 @@ export async function updateFlashcard(
       };
     }
 
-    // Update the specific flashcard
     const updatedContent = [...(currentDeck.content || [])];
     updatedContent[cardIndex] = updatedCard;
 
-    // Update the deck
+
     const { data, error } = await supabase
       .from("flashcards")
       .update({
@@ -224,7 +221,6 @@ export async function deleteFlashcard(deckId: string, cardIndex: number) {
       };
     }
 
-    // Get the current deck
     const { data: currentDeck, error: fetchError } = await supabase
       .from("flashcards")
       .select("content")
@@ -239,12 +235,11 @@ export async function deleteFlashcard(deckId: string, cardIndex: number) {
       };
     }
 
-    // Remove the flashcard at the specified index
     const updatedContent = (currentDeck.content || []).filter(
       (_: Flashcard, index: number) => index !== cardIndex
     );
 
-    // Update the deck
+
     const { data, error } = await supabase
       .from("flashcards")
       .update({

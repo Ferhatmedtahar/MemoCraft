@@ -1,4 +1,3 @@
-// This should be your main page component (Server Component)
 import NotesListClient from "../features/components/NotesList";
 
 async function NotesListServer({
@@ -8,8 +7,6 @@ async function NotesListServer({
   notesData: any[];
   foldersData: any[];
 }) {
-  // Fetch data in the server component
-
   return (
     <NotesListClient
       initialNotes={notesData || []}

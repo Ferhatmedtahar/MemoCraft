@@ -2,7 +2,6 @@
 
 import { createClientForServer } from "@/utils/supabase/server";
 
-// Types for your data
 export interface KnowledgeNode {
   id: string;
   name: string;
@@ -10,7 +9,7 @@ export interface KnowledgeNode {
   category: string;
   content?: string;
   folder_id?: string | null;
-  deck_id?: string | null; // For individual flashcards
+  deck_id?: string | null;
   created_at: string;
   is_favorite?: boolean;
   is_pinned?: boolean;
@@ -19,7 +18,7 @@ export interface KnowledgeNode {
   y?: number;
   vx?: number;
   vy?: number;
-  fx?: number | null; // D3 drag properties
+  fx?: number | null;
   fy?: number | null;
 }
 
@@ -41,7 +40,201 @@ export interface KnowledgeGraphData {
   };
 }
 
-// Fetch all folders for both notes and atoms
+const STOPS = [
+  "the","and","or","but","in","on","at","to","for","of","with","by",
+  "a","an","is","are","was","were","be","been","have","has","had",
+  "do","does","did","will","would","should","could","can","may","might",
+  "must","shall","this","that","these","those","i","you","he","she",
+  "it","we","they",
+];
+
+function randomPosition() {
+  return {
+    x: Math.random() * 1200,
+    y: Math.random() * 800,
+    vx: (Math.random() - 0.5) * 0.01,
+    vy: (Math.random() - 0.5) * 0.01,
+  };
+}
+
+function createNode(
+  id: string,
+  name: string,
+  type: KnowledgeNode["type"],
+  category: string,
+  extra: Partial<KnowledgeNode> = {},
+  index: number
+): KnowledgeNode {
+  return {
+    id,
+    name,
+    type,
+    category,
+    created_at: extra.created_at || new Date().toISOString(),
+    folder_id: extra.folder_id ?? null,
+    index,
+    ...randomPosition(),
+    ...extra,
+  };
+}
+
+function parseFlashcardContent(deck: any): any[] {
+  try {
+    if (typeof deck.content === "string") {
+      return JSON.parse(deck.content);
+    }
+    if (Array.isArray(deck.content)) {
+      return deck.content;
+    }
+  } catch (error) {
+    console.error("Error parsing flashcard content:", error);
+  }
+  return [];
+}
+
+function countIndividualFlashcards(flashcards: any[]): number {
+  return flashcards.reduce((total, deck) => {
+    try {
+      return total + parseFlashcardContent(deck).length;
+    } catch {
+      return total;
+    }
+  }, 0);
+}
+
+function significantWords(text: string): string[] {
+  return text
+    .split(/\s+/)
+    .filter((word) => word.length > 2 && !STOPS.includes(word));
+}
+
+function buildNodesAndLinks(
+  folders: any[],
+  notes: any[],
+  atoms: any[],
+  flashcards: any[]
+) {
+  const nodes: KnowledgeNode[] = [];
+  const links: KnowledgeLink[] = [];
+  const categorySet = new Set<string>();
+  let index = 0;
+
+  for (const folder of folders) {
+    const folderType = folder.content_type || folder.folder_type;
+    const category = folderType === "notes" ? "Notes" : "Atoms";
+    nodes.push(
+      createNode(folder.id, folder.name || `${folderType} Folder`, "folder", category, { created_at: folder.created_at }, index++)
+    );
+    categorySet.add(category);
+  }
+
+  for (const note of notes) {
+    const category = note.folder_id ? "Notes" : "Uncategorized Notes";
+    nodes.push(
+      createNode(note.id, note.title || "Untitled Note", "note", category, {
+        content: note.content,
+        folder_id: note.folder_id,
+        created_at: note.created_at,
+        is_favorite: note.is_favorite,
+        is_pinned: note.is_pinned,
+      }, index++)
+    );
+    categorySet.add(category);
+    if (note.folder_id) {
+      links.push({ source: note.folder_id, target: note.id, relationship: "contains" });
+    }
+  }
+
+  for (const atom of atoms) {
+    const category = atom.folder_id ? "Atoms" : "Uncategorized Atoms";
+    nodes.push(
+      createNode(atom.id, atom.title || "Untitled Atom", "atom", category, {
+        content: atom.content,
+        folder_id: atom.folder_id,
+        created_at: atom.created_at,
+        is_favorite: atom.favorite,
+        is_pinned: atom.pinned,
+      }, index++)
+    );
+    categorySet.add(category);
+    if (atom.folder_id) {
+      links.push({ source: atom.folder_id, target: atom.id, relationship: "contains" });
+    }
+  }
+
+  categorySet.add("Flashcards");
+  for (const deck of flashcards) {
+    const flashcardContent = parseFlashcardContent(deck);
+    const deckName = `${deck.deck_name} (${flashcardContent.length} cards)`;
+    nodes.push(
+      createNode(deck.id, deckName, "flashcard_deck", "Flashcards", {
+        content: `Flashcard deck with ${flashcardContent.length} cards`,
+        created_at: deck.created_at,
+      }, index++)
+    );
+
+    for (let i = 0; i < flashcardContent.length; i++) {
+      const card = flashcardContent[i];
+      const cardId = `${deck.id}_card_${i}`;
+      const cardName = card.question
+        ? card.question.length > 30
+          ? `${card.question.substring(0, 30)}...`
+          : card.question
+        : `Card ${i + 1}`;
+
+      nodes.push(
+        createNode(cardId, cardName, "flashcard", "Flashcards", {
+          content: `Question: ${card.question || "No question"}\nAnswer: ${card.answer || "No answer"}${card.hint ? `\nHint: ${card.hint}` : ""}`,
+          deck_id: deck.id,
+          created_at: deck.created_at,
+        }, index++)
+      );
+      links.push({ source: deck.id, target: cardId, relationship: "contains" });
+    }
+  }
+
+  return { nodes, links, categorySet };
+}
+
+function createContentConnections(
+  nodes: KnowledgeNode[],
+  links: KnowledgeLink[]
+) {
+  const contentNodes = nodes.filter(
+    (n) => n.content && n.type !== "folder" && n.type !== "flashcard_deck"
+  );
+
+  for (let i = 0; i < contentNodes.length; i++) {
+    for (let j = i + 1; j < contentNodes.length; j++) {
+      const a = contentNodes[i];
+      const b = contentNodes[j];
+      if (a.id === b.id || a.deck_id === b.deck_id) continue;
+
+      const contentA = a.content?.toLowerCase() || "";
+      const contentB = b.content?.toLowerCase() || "";
+      const titleA = a.name.toLowerCase();
+      const titleB = b.name.toLowerCase();
+
+      const wordsA = significantWords(titleA);
+      const wordsB = significantWords(titleB);
+
+      const hasCommonWords = wordsA.some((w) => wordsB.includes(w));
+
+      const hasContentOverlap =
+        contentA.length > 50 &&
+        contentB.length > 50 &&
+        (contentA.includes(titleB.slice(0, 10)) ||
+          contentB.includes(titleA.slice(0, 10)) ||
+          wordsA.some((w) => w.length > 4 && contentB.includes(w)) ||
+          wordsB.some((w) => w.length > 4 && contentA.includes(w)));
+
+      if (hasCommonWords || hasContentOverlap) {
+        links.push({ source: a.id, target: b.id, relationship: "related" });
+      }
+    }
+  }
+}
+
 export async function fetchAllFolders() {
   const supabase = await createClientForServer();
   const user = await supabase.auth.getUser();
@@ -60,60 +253,35 @@ export async function fetchAllFolders() {
     .eq("user_id", user.data.user.id);
 
   return [
-    ...(noteFolders || []).map((folder) => ({
-      ...folder,
-      content_type: "notes",
-    })),
-    ...(atomFolders || []).map((folder) => ({
-      ...folder,
-      content_type: "atoms",
-    })),
+    ...(noteFolders || []).map((f) => ({ ...f, content_type: "notes" })),
+    ...(atomFolders || []).map((f) => ({ ...f, content_type: "atoms" })),
   ];
 }
 
-// Fetch all notes
 export async function fetchAllNotes() {
   const supabase = await createClientForServer();
   const user = await supabase.auth.getUser();
   if (!user.data.user) return [];
-
-  const { data } = await supabase
-    .from("notes")
-    .select("*")
-    .eq("user_id", user.data.user.id);
-
+  const { data } = await supabase.from("notes").select("*").eq("user_id", user.data.user.id);
   return data || [];
 }
 
-// Fetch all atoms
 export async function fetchAllAtoms() {
   const supabase = await createClientForServer();
   const user = await supabase.auth.getUser();
   if (!user.data.user) return [];
-
-  const { data } = await supabase
-    .from("atoms")
-    .select("*")
-    .eq("user_id", user.data.user.id);
-
+  const { data } = await supabase.from("atoms").select("*").eq("user_id", user.data.user.id);
   return data || [];
 }
 
-// Fetch all flashcard decks
 export async function fetchAllFlashcards() {
   const supabase = await createClientForServer();
   const user = await supabase.auth.getUser();
   if (!user.data.user) return [];
-
-  const { data } = await supabase
-    .from("flashcards")
-    .select("*")
-    .eq("user_id", user.data.user.id);
-
+  const { data } = await supabase.from("flashcards").select("*").eq("user_id", user.data.user.id);
   return data || [];
 }
 
-// Main function to fetch and process all knowledge graph data
 export async function fetchKnowledgeGraphData(): Promise<KnowledgeGraphData> {
   try {
     const [folders, notes, atoms, flashcards] = await Promise.all([
@@ -123,287 +291,14 @@ export async function fetchKnowledgeGraphData(): Promise<KnowledgeGraphData> {
       fetchAllFlashcards(),
     ]);
 
-    const nodes: KnowledgeNode[] = [];
-    const links: KnowledgeLink[] = [];
-    const categorySet = new Set<string>();
-    let nodeIndex = 0;
+    const { nodes, links, categorySet } = buildNodesAndLinks(
+      folders,
+      notes,
+      atoms,
+      flashcards
+    );
 
-    // Process folders first
-    folders.forEach((folder) => {
-      const folderType = folder.content_type || folder.folder_type;
-      const category = folderType === "notes" ? "Notes" : "Atoms";
-
-      nodes.push({
-        id: folder.id,
-        name: folder.name || `${folderType} Folder`,
-        type: "folder",
-        category,
-        created_at: folder.created_at,
-        folder_id: null,
-        index: nodeIndex++,
-        x: Math.random() * 1200,
-        y: Math.random() * 800,
-        vx: (Math.random() - 0.5) * 0.01,
-        vy: (Math.random() - 0.5) * 0.01,
-      });
-      categorySet.add(category);
-    });
-
-    // Process notes
-    notes.forEach((note) => {
-      const category = note.folder_id ? "Notes" : "Uncategorized Notes";
-      nodes.push({
-        id: note.id,
-        name: note.title || "Untitled Note",
-        type: "note",
-        category,
-        content: note.content,
-        folder_id: note.folder_id,
-        created_at: note.created_at,
-        is_favorite: note.is_favorite,
-        is_pinned: note.is_pinned,
-        index: nodeIndex++,
-        x: Math.random() * 1200,
-        y: Math.random() * 800,
-        vx: (Math.random() - 0.5) * 0.01,
-        vy: (Math.random() - 0.5) * 0.01,
-      });
-      categorySet.add(category);
-
-      // Create link from folder to note
-      if (note.folder_id) {
-        links.push({
-          source: note.folder_id,
-          target: note.id,
-          relationship: "contains",
-        });
-      }
-    });
-
-    // Process atoms
-    atoms.forEach((atom) => {
-      const category = atom.folder_id ? "Atoms" : "Uncategorized Atoms";
-      nodes.push({
-        id: atom.id,
-        name: atom.title || "Untitled Atom",
-        type: "atom",
-        category,
-        content: atom.content,
-        folder_id: atom.folder_id,
-        created_at: atom.created_at,
-        is_favorite: atom.favorite,
-        is_pinned: atom.pinned,
-        index: nodeIndex++,
-        x: Math.random() * 1200,
-        y: Math.random() * 800,
-        vx: (Math.random() - 0.5) * 0.01,
-        vy: (Math.random() - 0.5) * 0.01,
-      });
-      categorySet.add(category);
-
-      // Create link from folder to atom
-      if (atom.folder_id) {
-        links.push({
-          source: atom.folder_id,
-          target: atom.id,
-          relationship: "contains",
-        });
-      }
-    });
-
-    // Process flashcard decks and individual cards
-    flashcards.forEach((deck) => {
-      let flashcardContent = [];
-
-      // Parse the content - it might be a string or already an array
-      try {
-        if (typeof deck.content === "string") {
-          flashcardContent = JSON.parse(deck.content);
-        } else if (Array.isArray(deck.content)) {
-          flashcardContent = deck.content;
-        }
-      } catch (error) {
-        console.error("Error parsing flashcard content:", error);
-        flashcardContent = [];
-      }
-
-      const flashcardCount = flashcardContent.length;
-      const deckName = `${deck.deck_name} (${flashcardCount} cards)`;
-
-      // Create deck node
-      const deckId = deck.id;
-      nodes.push({
-        id: deckId,
-        name: deckName,
-        type: "flashcard_deck",
-        category: "Flashcards",
-        content: `Flashcard deck with ${flashcardCount} cards`,
-        created_at: deck.created_at,
-        folder_id: null,
-        index: nodeIndex++,
-        x: Math.random() * 1200,
-        y: Math.random() * 800,
-        vx: (Math.random() - 0.5) * 0.01,
-        vy: (Math.random() - 0.5) * 0.01,
-      });
-      categorySet.add("Flashcards");
-
-      // Create individual flashcard nodes
-      flashcardContent.forEach((card: any, cardIndex: number) => {
-        const cardId = `${deckId}_card_${cardIndex}`;
-        const cardName = card.question
-          ? card.question.length > 30
-            ? `${card.question.substring(0, 30)}...`
-            : card.question
-          : `Card ${cardIndex + 1}`;
-
-        nodes.push({
-          id: cardId,
-          name: cardName,
-          type: "flashcard",
-          category: "Flashcards",
-          content: `Question: ${card.question || "No question"}\nAnswer: ${
-            card.answer || "No answer"
-          }${card.hint ? `\nHint: ${card.hint}` : ""}`,
-          deck_id: deckId,
-          created_at: deck.created_at,
-          folder_id: null,
-          index: nodeIndex++,
-          x: Math.random() * 1200,
-          y: Math.random() * 800,
-          vx: (Math.random() - 0.5) * 0.01,
-          vy: (Math.random() - 0.5) * 0.01,
-        });
-
-        // Create link from deck to card
-        links.push({
-          source: deckId,
-          target: cardId,
-          relationship: "contains",
-        });
-      });
-    });
-
-    // Create connections based on content similarity or keywords
-    const createContentConnections = () => {
-      const contentNodes = nodes.filter(
-        (n) => n.content && n.type !== "folder" && n.type !== "flashcard_deck"
-      );
-
-      contentNodes.forEach((nodeA, i) => {
-        contentNodes.slice(i + 1).forEach((nodeB) => {
-          if (nodeA.id !== nodeB.id && nodeA.deck_id !== nodeB.deck_id) {
-            // Simple keyword matching - you can make this more sophisticated
-            const contentA = nodeA.content?.toLowerCase() || "";
-            const contentB = nodeB.content?.toLowerCase() || "";
-            const titleA = nodeA.name.toLowerCase();
-            const titleB = nodeB.name.toLowerCase();
-
-            // Check if titles share words (excluding common words)
-            const commonWords = [
-              "the",
-              "and",
-              "or",
-              "but",
-              "in",
-              "on",
-              "at",
-              "to",
-              "for",
-              "of",
-              "with",
-              "by",
-              "a",
-              "an",
-              "is",
-              "are",
-              "was",
-              "were",
-              "be",
-              "been",
-              "have",
-              "has",
-              "had",
-              "do",
-              "does",
-              "did",
-              "will",
-              "would",
-              "should",
-              "could",
-              "can",
-              "may",
-              "might",
-              "must",
-              "shall",
-              "this",
-              "that",
-              "these",
-              "those",
-              "i",
-              "you",
-              "he",
-              "she",
-              "it",
-              "we",
-              "they",
-            ];
-
-            const wordsA = titleA
-              .split(/\s+/)
-              .filter((word) => word.length > 2 && !commonWords.includes(word));
-            const wordsB = titleB
-              .split(/\s+/)
-              .filter((word) => word.length > 2 && !commonWords.includes(word));
-
-            const hasCommonWords = wordsA.some((word) => wordsB.includes(word));
-
-            // More sophisticated content overlap detection
-            const hasContentOverlap =
-              contentA.length > 50 &&
-              contentB.length > 50 &&
-              (contentA.includes(
-                titleB.slice(0, Math.min(10, titleB.length))
-              ) ||
-                contentB.includes(
-                  titleA.slice(0, Math.min(10, titleA.length))
-                ) ||
-                // Check for shared significant words in content
-                wordsA.some(
-                  (word) => word.length > 4 && contentB.includes(word)
-                ) ||
-                wordsB.some(
-                  (word) => word.length > 4 && contentA.includes(word)
-                ));
-
-            if (hasCommonWords || hasContentOverlap) {
-              links.push({
-                source: nodeA.id,
-                target: nodeB.id,
-                relationship: "related",
-              });
-            }
-          }
-        });
-      });
-    };
-
-    createContentConnections();
-
-    // Count individual flashcards for stats
-    const totalIndividualFlashcards = flashcards.reduce((total, deck) => {
-      try {
-        let content = [];
-        if (typeof deck.content === "string") {
-          content = JSON.parse(deck.content);
-        } else if (Array.isArray(deck.content)) {
-          content = deck.content;
-        }
-        return total + content.length;
-      } catch {
-        return total;
-      }
-    }, 0);
+    createContentConnections(nodes, links);
 
     return {
       nodes,
@@ -412,7 +307,7 @@ export async function fetchKnowledgeGraphData(): Promise<KnowledgeGraphData> {
       stats: {
         totalNotes: notes.length,
         totalAtoms: atoms.length,
-        totalFlashcards: totalIndividualFlashcards, // Count individual cards, not decks
+        totalFlashcards: countIndividualFlashcards(flashcards),
         totalFolders: folders.length,
       },
     };
@@ -422,12 +317,7 @@ export async function fetchKnowledgeGraphData(): Promise<KnowledgeGraphData> {
       nodes: [],
       links: [],
       categories: ["All"],
-      stats: {
-        totalNotes: 0,
-        totalAtoms: 0,
-        totalFlashcards: 0,
-        totalFolders: 0,
-      },
+      stats: { totalNotes: 0, totalAtoms: 0, totalFlashcards: 0, totalFolders: 0 },
     };
   }
 }

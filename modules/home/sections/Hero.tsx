@@ -24,43 +24,68 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <div className="min-h-screen w-full relative">
-        {/* Grid Background */}
+      <div className="min-h-screen w-full relative overflow-hidden">
+        {/* Grid Background with radial fade */}
         <div
-          className="absolute inset-0 z-0 bg-primary/10"
+          className="absolute inset-0 z-0 bg-primary/5"
           style={{
             backgroundImage: `
-      linear-gradient(
-  to right,
-  color-mix(in oklab, var(--color-primary) 35%,transparent) 1px,
-  transparent 1px
-),
-linear-gradient(
-  to bottom,
-  color-mix(in oklab, var(--color-primary) 35%, transparent) 1px,
-  transparent 1px
-)
-`,
+              linear-gradient(to right, color-mix(in oklab, var(--color-primary) 20%, transparent) 1px, transparent 1px),
+              linear-gradient(to bottom, color-mix(in oklab, var(--color-primary) 20%, transparent) 1px, transparent 1px)
+            `,
             backgroundSize: "40px 40px",
+            maskImage: "radial-gradient(ellipse at center, black 40%, transparent 80%)",
+            WebkitMaskImage: "radial-gradient(ellipse at center, black 40%, transparent 80%)",
           }}
         />
+        
+        {/* Floating Decorative Badges */}
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          <motion.div
+            animate={{ y: [0, -15, 0], opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute top-[20%] left-[10%] md:left-[20%] bg-background/80 backdrop-blur-md border border-border px-4 py-2 rounded-full shadow-lg flex items-center gap-2"
+          >
+            <Sparkles className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium text-foreground">AI Summaries</span>
+          </motion.div>
+          
+          <motion.div
+            animate={{ y: [0, 20, 0], opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+            className="absolute top-[35%] right-[5%] md:right-[15%] bg-background/80 backdrop-blur-md border border-border px-4 py-2 rounded-full shadow-lg flex items-center gap-2"
+          >
+            <Network className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium text-foreground">Knowledge Graphs</span>
+          </motion.div>
+          
+          <motion.div
+            animate={{ y: [0, -10, 0], opacity: [0.5, 1, 0.5] }}
+            transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+            className="absolute bottom-[25%] left-[15%] md:left-[25%] bg-background/80 backdrop-blur-md border border-border px-4 py-2 rounded-full shadow-lg flex items-center gap-2"
+          >
+            <FileText className="w-4 h-4 text-primary" />
+            <span className="text-sm font-medium text-foreground">Smart Notes</span>
+          </motion.div>
+        </div>
+
         {/* Your Content/Components */}
         <section className="relative z-10 py-20 px-4 min-h-[100vh] flex items-center justify-center">
-          <div className="container mx-auto text-center max-w-4xl   mb-20   md:pb-12 flex flex-col items-center gap-6">
+          <div className="container mx-auto text-center max-w-4xl mb-20 md:pb-12 flex flex-col items-center gap-6">
             <motion.h2
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
-              className="text-5xl md:text-6xl font-bold text-foreground leading-none"
+              className="text-5xl md:text-7xl font-extrabold text-foreground leading-tight tracking-tight"
             >
-              Organize, Connect, and
-              <span className="text-primary"> Learn Smarter</span>
+              Organize, Connect, and <br className="hidden sm:block" />
+              <span className="bg-gradient-to-r from-primary to-primary/50 bg-clip-text text-transparent"> Learn Smarter</span>
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-              className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed"
+              className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-light"
             >
               Transform your notes into a powerful knowledge system with
               AI-powered summaries, interactive knowledge graphs, and
@@ -71,8 +96,9 @@ linear-gradient(
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
+                className="mt-4"
               >
-                <Button variant="secondary" size={"lg"}>
+                <Button variant="default" size="lg" className="rounded-full shadow-xl hover:shadow-primary/25 transition-all duration-300 px-8 text-lg">
                   <Link href="/dashboard">Go to Dashboard</Link>
                 </Button>
               </motion.div>
@@ -81,6 +107,7 @@ linear-gradient(
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: "easeOut", delay: 0.4 }}
+                className="mt-4"
               >
                 <AuthForm />
               </motion.div>

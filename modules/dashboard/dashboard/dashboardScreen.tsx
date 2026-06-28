@@ -75,7 +75,6 @@ function getMonthlyData(notes: any[], atoms: any[], flashcards: any[]) {
     const year = date.getFullYear();
     const month = date.getMonth();
 
-    // Create date strings for the entire month
     const monthStr = `${year}-${String(month + 1).padStart(2, "0")}`;
 
     const notesCount = notes.filter(
@@ -143,28 +142,6 @@ export default async function DashboardScreen({
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      {/* <div className="flex items-center justify-between">
-        <div className="space-y-2">
-          <h1 className="text-3xl font-bold text-foreground">
-            Welcome to your Dashboard
-          </h1>
-          <p className="text-muted-foreground ">
-            Track your progress and manage your learning journey.
-          </p>
-        </div>
-        <div className="bg-primary/10 p-3 ">
-          <div className="flex items-center gap-2 mb-1">
-            <Zap className="h-4 w-4 text-primary" />
-            <span className="font-medium text-sm">Status</span>
-          </div>
-          <p className="text-xs text-muted-foreground">
-            {notes.length + atoms.length + flashcards.length === 0
-              ? "Ready to start your learning journey!"
-              : `You're doing great! Keep building your knowledge base.`}
-          </p>
-        </div>
-      </div> */}
       <div className="space-y-4">
         {/* Main title section */}
         <div className="space-y-2">

@@ -174,10 +174,8 @@ export default function KnowledgeGraph() {
 
     const { nodes: filteredNodes, links: filteredLinks } = getFilteredData();
 
-    // Create container group for zoom/pan
     const container = svg.append("g");
 
-    // Setup zoom behavior
     const zoom = d3
       .zoom<SVGSVGElement, unknown>()
       .scaleExtent([0.1, 4])
@@ -192,23 +190,6 @@ export default function KnowledgeGraph() {
     // Clone the data to avoid D3 mutating the original arrays
     const simulationNodes = filteredNodes.map((d) => ({ ...d }));
     const simulationLinks = filteredLinks.map((d) => ({ ...d }));
-
-    // const simulation = d3
-    //   .forceSimulation(simulationNodes as d3.SimulationNodeDatum[])
-    //   .force(
-    //     "link",
-    //     d3
-    //       .forceLink(simulationLinks)
-    //       .id((d: any) => d.id)
-    //       .distance((d: any) => {
-    //         // Shorter distance for folder-content relationships
-    //         if (d.relationship === "contains") return 70;
-    //         return 150;
-    //       })
-    //   )
-    //   .force("charge", d3.forceManyBody().strength(-300))
-    //   .force("center", d3.forceCenter(width / 10, height / 10))
-    //   .force("collision", d3.forceCollide(0.5).radius(100));
 
     const simulation = d3
       .forceSimulation(simulationNodes as d3.SimulationNodeDatum[])
@@ -594,7 +575,6 @@ export default function KnowledgeGraph() {
                   variant="ghost"
                   size="sm"
                   onClick={handleZoomIn}
-                  // className="h-8 w-8 p-0"
                 >
                   <ZoomIn className="w-5 h-5" />
                 </Button>
@@ -602,7 +582,6 @@ export default function KnowledgeGraph() {
                   variant="ghost"
                   size="sm"
                   onClick={handleZoomOut}
-                  // className="h-8 w-8 p-0"
                 >
                   <ZoomOut className="w-5 h-5" />
                 </Button>
@@ -610,7 +589,6 @@ export default function KnowledgeGraph() {
                   variant="ghost"
                   size="sm"
                   onClick={handleResetZoom}
-                  // className="h-8 w-8 p-0"
                 >
                   <RotateCcw className="w-5 h-5" />
                 </Button>
@@ -619,7 +597,6 @@ export default function KnowledgeGraph() {
                 variant="outline"
                 size="sm"
                 onClick={() => setShowLegend(!showLegend)}
-                // className="text-gray-300 border-gray-600"
               >
                 {showLegend ? "Hide" : "Show"} Legend
               </Button>

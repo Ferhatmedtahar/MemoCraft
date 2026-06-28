@@ -1,5 +1,8 @@
 "use server";
 
+import { checkAndUpdateAIUsage } from "@/lib/ai-usage";
+import { callGemini } from "@/lib/gemini";
+
 interface FlashcardData {
   question: string;
   answer: string;
@@ -22,12 +25,12 @@ export async function generateFlashcardsWithAI(
     };
   }
 
-  const apiKey = process.env.GOOGLE_CLIENT_AI;
-  if (!apiKey) {
+  const usageCheck = await checkAndUpdateAIUsage();
+  if (!usageCheck.success || !usageCheck.canUseAI) {
     return {
       success: false,
       flashcards: [],
-      error: "AI API key not configured",
+      error: usageCheck.message,
     };
   }
 
@@ -56,61 +59,14 @@ Return format (JSON array only):
 ]`;
 
   try {
-    const response = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-goog-api-key": apiKey,
-        },
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [
-                {
-                  text: prompt,
-                },
-              ],
-            },
-          ],
-          generationConfig: {
-            maxOutputTokens: 2048,
-            temperature: 0.3, // Balanced creativity and consistency
-            topP: 0.8,
-            topK: 40,
-          },
-        }),
-      }
-    );
+    const aiResponse = await callGemini(prompt, {
+      temperature: 0.3,
+      maxOutputTokens: 2048,
+      topK: 40,
+    });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error("Error response from AI API:", errorText);
-      return {
-        success: false,
-        flashcards: [],
-        error: "Failed to generate flashcards",
-      };
-    }
-
-    const data = await response.json();
-
-    if (
-      !data.candidates ||
-      !data.candidates[0] ||
-      !data.candidates[0].content
-    ) {
-      console.error("Unexpected API response structure:", data);
-      return { success: false, flashcards: [], error: "Invalid AI response" };
-    }
-
-    const aiResponse = data.candidates[0].content.parts[0]?.text || "";
-
-    // Try to extract JSON from the response
     let flashcards: FlashcardData[] = [];
     try {
-      // Remove any markdown formatting or extra text
       const jsonMatch = aiResponse.match(/\[[\s\S]*\]/);
       if (!jsonMatch) {
         throw new Error("No JSON array found in response");
@@ -118,12 +74,10 @@ Return format (JSON array only):
 
       flashcards = JSON.parse(jsonMatch[0]);
 
-      // Validate the structure
       if (!Array.isArray(flashcards)) {
         throw new Error("Response is not an array");
       }
 
-      // Validate each flashcard
       flashcards = flashcards
         .filter(
           (card) =>
@@ -164,16 +118,13 @@ Return format (JSON array only):
   }
 }
 
-// Helper function to generate hints
 function generateHint(answer: string): string {
   if (!answer) return "";
 
-  // For numbers, return the number itself
   if (/^\d+$/.test(answer.trim())) {
     return answer;
   }
 
-  // For text, return first 1-2 characters + "..."
   const trimmed = answer.trim();
   if (trimmed.length <= 2) return trimmed;
   return trimmed.substring(0, 2) + "...";

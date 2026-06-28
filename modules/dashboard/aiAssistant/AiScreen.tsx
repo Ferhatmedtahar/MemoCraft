@@ -20,9 +20,11 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import {
-  chatWithAI,
   fetchNoteById,
   fetchNotes,
+} from "@/modules/dashboard/notes/data/fetchData";
+import {
+  chatWithAI,
   getUserAIUsage,
 } from "./data/ai.actions";
 
@@ -177,7 +179,6 @@ export default function AIAssistantScreen() {
 
         setMessages((prev) => [...prev, assistantMessage]);
 
-        // Update usage info
         setUsageInfo((prev) => ({
           ...prev,
           currentUsage: prev.currentUsage + 1,
@@ -187,7 +188,6 @@ export default function AIAssistantScreen() {
       } else {
         toast.error(result.message || "Failed to get AI response");
 
-        // Update usage info if we got rate limit info
         if (typeof result.remainingRequests === "number") {
           setUsageInfo((prev) => ({
             ...prev,

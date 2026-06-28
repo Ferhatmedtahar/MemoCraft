@@ -20,13 +20,11 @@ export async function getActivityData(): Promise<ActivityData> {
 
   const userId = user.data.user.id;
 
-  // Get last 365 days for the activity map
   const today = new Date();
   const oneYearAgo = new Date(today);
   oneYearAgo.setFullYear(today.getFullYear() - 1);
 
   try {
-    // Fetch notes, atoms, and flashcards from the last year
     const [{ data: notesData }, { data: atomsData }, { data: flashcardsData }] =
       await Promise.all([
         supabase
@@ -46,17 +44,14 @@ export async function getActivityData(): Promise<ActivityData> {
           .gte("created_at", oneYearAgo.toISOString()),
       ]);
 
-    // Create daily activity map
     const dailyActivityMap = new Map<string, number>();
 
-    // Helper function to add activity for a date
     const addActivity = (dateString: string) => {
       if (!dateString) return;
       const date = new Date(dateString).toISOString().split("T")[0];
       dailyActivityMap.set(date, (dailyActivityMap.get(date) || 0) + 1);
     };
 
-    // Process notes
     notesData?.forEach((note) => {
       addActivity(note.created_at);
       // Count updates as separate activities if different from creation
@@ -65,7 +60,6 @@ export async function getActivityData(): Promise<ActivityData> {
       }
     });
 
-    // Process atoms
     atomsData?.forEach((atom) => {
       addActivity(atom.created_at);
       // Count updates as separate activities if different from creation
@@ -74,7 +68,6 @@ export async function getActivityData(): Promise<ActivityData> {
       }
     });
 
-    // Process flashcards
     flashcardsData?.forEach((flashcard) => {
       addActivity(flashcard.created_at);
       if (
@@ -85,7 +78,6 @@ export async function getActivityData(): Promise<ActivityData> {
       }
     });
 
-    // Convert to array format for the last 365 days
     const dailyActivity = [];
     for (let i = 364; i >= 0; i--) {
       const date = new Date(today);
@@ -99,7 +91,6 @@ export async function getActivityData(): Promise<ActivityData> {
       });
     }
 
-    // Count total active days (days with at least 1 activity)
     const totalActiveDays = Array.from(dailyActivityMap.values()).filter(
       (count) => count > 0
     ).length;

@@ -134,7 +134,6 @@ export async function deleteFolder(id: string) {
   }
 }
 
-// Helper function to get all folders for a user
 export async function getUserFolders() {
   try {
     const supabase = await createClientForServer();

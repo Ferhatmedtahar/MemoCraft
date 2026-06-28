@@ -187,10 +187,8 @@ function InteractiveDemoGraph() {
     const width = 800;
     const height = 400;
 
-    // Create container group for zoom/pan
     const container = svg.append("g");
 
-    // Setup zoom behavior
     const zoom = d3
       .zoom<SVGSVGElement, unknown>()
       .scaleExtent([0.3, 3])
